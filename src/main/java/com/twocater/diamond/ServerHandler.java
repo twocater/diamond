@@ -1,0 +1,5 @@
+package com.twocater.diamond;
+
+public class ServerHandler {
+
+}
