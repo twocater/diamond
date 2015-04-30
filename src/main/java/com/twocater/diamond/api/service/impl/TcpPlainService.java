@@ -1,7 +1,7 @@
 package com.twocater.diamond.api.service.impl;
 
 import com.twocater.diamond.api.service.Service;
+import com.twocater.diamond.api.service.impl.request.TcpPlainRequest;
 
-public class TcpPlainService implements Service {
-
+public abstract class TcpPlainService implements Service<TcpPlainRequest> {
 }

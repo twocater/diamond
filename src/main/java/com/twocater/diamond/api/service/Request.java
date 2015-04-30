@@ -1,5 +1,5 @@
 package com.twocater.diamond.api.service;
 
-public class Request {
+public interface Request {
 
 }

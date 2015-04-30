@@ -1,10 +1,8 @@
 package com.twocater.diamond.api.service.impl;
 
-import com.twocater.diamond.api.service.Request;
 import com.twocater.diamond.api.service.Service;
+import com.twocater.diamond.api.service.impl.request.HttpJsonRequest;
 
-public class HttpJsonService implements Service {
-
-	public abstract void service(HttpJsonRequest request) throws Exception;
+public abstract class HttpJsonService implements Service<HttpJsonRequest> {
 
 }
