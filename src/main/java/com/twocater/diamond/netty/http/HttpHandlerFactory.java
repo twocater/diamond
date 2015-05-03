@@ -7,6 +7,7 @@ package com.twocater.diamond.netty.http;
 
 import com.twocater.diamond.netty.NettyChannelInitializer;
 import com.twocater.diamond.netty.NettyHandlerFactory;
+import com.twocater.diamond.netty.Nettyhandler;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
@@ -22,7 +23,7 @@ public class HttpHandlerFactory implements NettyHandlerFactory {
 
     @Override
     public ChannelInboundHandlerAdapter createHandler() {
-        return new HttpHandler();
+        return new Nettyhandler();
     }
 
     @Override

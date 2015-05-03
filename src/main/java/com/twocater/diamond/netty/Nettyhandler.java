@@ -5,7 +5,6 @@
  */
 package com.twocater.diamond.netty;
 
-import com.twocater.diamond.server.Server;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -15,10 +14,13 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  */
 public class Nettyhandler extends ChannelInboundHandlerAdapter {
 
-//    Server server;
+ 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-//        server.handle(msg);
+        
+        
+        
+ 
     }
 
 }

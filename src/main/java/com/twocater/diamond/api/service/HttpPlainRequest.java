@@ -9,6 +9,6 @@ package com.twocater.diamond.api.service;
  *
  * @author cpaladin
  */
-public class HttpPlainRequest {
+public class HttpPlainRequest implements HttpRequest{
     
 }
