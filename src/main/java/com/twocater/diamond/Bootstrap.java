@@ -14,7 +14,7 @@ public class Bootstrap {
     public void boot() throws Exception {
         System.out.println("==========boot server==========");
         long start = System.currentTimeMillis();
-        final ServerLifeCycle lifeCycle = new ServerLifeCycle();
+        final SpringXmlServerLifeCycle lifeCycle = new SpringXmlServerLifeCycle();
         lifeCycle.init();
         lifeCycle.start();
         Runtime.getRuntime().addShutdownHook(new Thread() {

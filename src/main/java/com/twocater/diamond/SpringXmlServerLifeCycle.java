@@ -5,19 +5,22 @@
  */
 package com.twocater.diamond;
 
+import com.twocater.diamond.server.Server;
+import com.twocater.diamond.server.parse.SpringXmlServerFactory;
+
 /**
  *
  * @author cpaladin
  */
-public class ServerLifeCycle implements LifeCycle {
+public class SpringXmlServerLifeCycle implements LifeCycle {
 
     private Server server;
     private long startTime;
 
     @Override
     public void init() throws Exception {
-        NettyServerConfig nettyServerConfig = new NettyServerConfig();
-        server = new NettyServer(nettyServerConfig);
+        SpringXmlServerFactory serverFactory = new SpringXmlServerFactory();
+        server = serverFactory.createServer();
     }
 
     @Override

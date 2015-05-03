@@ -1,7 +1,7 @@
 package com.twocater.diamond.api.service;
 
-public interface Service<T extends Request> {
+public abstract class Service<T extends Request> {
 
-	void service(T request) throws Exception;
+	abstract void service(T request) throws Exception;
 
 }

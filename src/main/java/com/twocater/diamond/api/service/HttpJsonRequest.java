@@ -3,19 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.twocater.diamond;
+package com.twocater.diamond.api.service;
 
 /**
  *
  * @author cpaladin
  */
-class NettyServerConfig {
-
-    private int port;
-    private boolean keepAlive;
-    
-    private int readTimeout;
-    
-    
+public class HttpJsonRequest implements HttpRequest {
 
 }

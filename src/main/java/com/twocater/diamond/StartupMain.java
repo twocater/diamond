@@ -27,24 +27,24 @@ public class StartupMain {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.boot();
 
-            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.socket().bind(new InetSocketAddress("192.168.200.41", 8080));
-            serverSocketChannel.configureBlocking(false);
-
-            Selector selector = Selector.open();
-            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT, null);
-            System.err.println("select...");
-            selector.select();
-            System.err.println("select");
-            Set<SelectionKey> selectedKeys = selector.selectedKeys();
-            Iterator<SelectionKey> iterator = selectedKeys.iterator();
-            while (iterator.hasNext()) {
-
-                SelectionKey next = iterator.next();
-//                next.channel()
-                System.err.println(next);
-
-            }
+//            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+//            serverSocketChannel.socket().bind(new InetSocketAddress("192.168.200.41", 8080));
+//            serverSocketChannel.configureBlocking(false);
+//
+//            Selector selector = Selector.open();
+//            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT, null);
+//            System.err.println("select...");
+//            selector.select();
+//            System.err.println("select");
+//            Set<SelectionKey> selectedKeys = selector.selectedKeys();
+//            Iterator<SelectionKey> iterator = selectedKeys.iterator();
+//            while (iterator.hasNext()) {
+//
+//                SelectionKey next = iterator.next();
+////                next.channel()
+//                System.err.println(next);
+//
+//            }
         } catch (Exception ex) {
             ex.printStackTrace();
             System.err.println("start up exception.");
