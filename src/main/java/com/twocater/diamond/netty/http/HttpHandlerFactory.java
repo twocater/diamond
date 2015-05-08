@@ -5,15 +5,11 @@
  */
 package com.twocater.diamond.netty.http;
 
+import com.twocater.diamond.netty.CoderFactory;
 import com.twocater.diamond.netty.NettyChannelInitializer;
 import com.twocater.diamond.netty.NettyHandlerFactory;
-import com.twocater.diamond.netty.Nettyhandler;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import com.twocater.diamond.server.Server;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOutboundHandlerAdapter;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpResponseEncoder;
 
 /**
  *
@@ -21,24 +17,18 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
  */
 public class HttpHandlerFactory implements NettyHandlerFactory {
 
-    @Override
-    public ChannelInboundHandlerAdapter createHandler() {
-        return new Nettyhandler();
+    private final CoderFactory coderFactory;
+
+    public HttpHandlerFactory(Server server, CoderFactory coderFactory) {
+        if (coderFactory == null) {
+            coderFactory = new HttpCoderFactory(server);
+        }
+        this.coderFactory = coderFactory;
     }
 
     @Override
     public ChannelInitializer createChildHandler() {
-        return new NettyChannelInitializer(this);
-    }
-
-    @Override
-    public ChannelInboundHandlerAdapter[] createDecoder() {
-        return new ChannelInboundHandlerAdapter[]{new HttpRequestDecoder(), new HttpObjectAggregator(1048576), new ToHttpPlainRequestHandler()};
-    }
-
-    @Override
-    public ChannelOutboundHandlerAdapter[] createEncoder() {
-        return new ChannelOutboundHandlerAdapter[]{new HttpResponseEncoder()};
+        return new NettyChannelInitializer(coderFactory);
     }
 
 }

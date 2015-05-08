@@ -5,9 +5,8 @@
  */
 package com.twocater.diamond.netty;
 
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import com.twocater.diamond.server.Server;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOutboundHandlerAdapter;
 
 /**
  *
@@ -17,12 +16,6 @@ import io.netty.channel.ChannelOutboundHandlerAdapter;
  */
 public interface NettyHandlerFactory extends HandlerFactory {
 
-    ChannelInboundHandlerAdapter createHandler();
-
-    ChannelInitializer createChildHandler();
-
-    ChannelInboundHandlerAdapter[] createDecoder();
-
-    ChannelOutboundHandlerAdapter[] createEncoder();
+    public ChannelInitializer createChildHandler();
 
 }

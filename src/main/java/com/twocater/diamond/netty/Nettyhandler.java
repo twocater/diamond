@@ -5,6 +5,10 @@
  */
 package com.twocater.diamond.netty;
 
+import com.twocater.diamond.protocol.http.HttpRequestMessage;
+import com.twocater.diamond.protocol.http.HttpResponseMessage;
+import com.twocater.diamond.protocol.http.HttpServerRequest;
+import com.twocater.diamond.server.Server;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -14,13 +18,21 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  */
 public class Nettyhandler extends ChannelInboundHandlerAdapter {
 
- 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        
-        
-        
- 
+    private final Server server;
+
+    public Nettyhandler(Server server) {
+        this.server = server;
     }
 
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        HttpRequestMessage httpRequestMessage = (HttpRequestMessage) msg;
+        HttpResponseMessage httpResponseMessage = httpRequestMessage.getResponse();
+        
+        HttpServerRequest serverRequest = new HttpServerRequest(httpRequestMessage);
+        
+        
+        server.handle(serverRequest);
+        ctx.writeAndFlush(httpResponseMessage);
+    }
 }

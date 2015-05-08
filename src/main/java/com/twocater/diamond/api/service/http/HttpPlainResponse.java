@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.twocater.diamond.server;
+package com.twocater.diamond.api.service.http;
 
 /**
  *
  * @author cpaladin
  */
-public interface Server {
-
-    void startup() throws Exception;
-
-    void shutdown() throws Exception;
-
-    void handle(ServerRequest request) throws Exception;
+public interface HttpPlainResponse {
 
 }

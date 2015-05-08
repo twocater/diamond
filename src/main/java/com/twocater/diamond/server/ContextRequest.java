@@ -9,12 +9,6 @@ package com.twocater.diamond.server;
  *
  * @author cpaladin
  */
-public interface Server {
-
-    void startup() throws Exception;
-
-    void shutdown() throws Exception;
-
-    void handle(ServerRequest request) throws Exception;
-
+public interface ContextRequest {
+    
 }

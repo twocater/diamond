@@ -9,7 +9,6 @@ import com.twocater.diamond.Connector;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.twocater.diamond.spring.ServerConfig;
 
 /**
  *
@@ -18,7 +17,13 @@ import com.twocater.diamond.spring.ServerConfig;
 public class NettyServer implements Server {
 
     private final List<Connector> connectors = new ArrayList<Connector>();
+    
+    private ServerContext context;
 
+    public void setServerContext(ServerContext context) {
+        this.context  = context;
+    }
+    
     public void addConnector(Connector connector) {
         this.connectors.add(connector);
     }
@@ -35,6 +40,11 @@ public class NettyServer implements Server {
         for (Connector connector : connectors) {
             connector.unbind();
         }
+    }
+
+    @Override
+    public void handle(ServerRequest request) throws Exception {
+       context.handle(request);
     }
 
 }

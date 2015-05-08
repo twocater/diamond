@@ -11,6 +11,7 @@ import com.twocater.diamond.server.ServerFactory;
 import com.twocater.diamond.server.NettyServer;
 import com.twocater.diamond.server.Server;
 import com.twocater.diamond.netty.ConnectorFactory;
+import com.twocater.diamond.server.HttpContext;
 import com.twocater.diamond.server.NettyServer;
 import com.twocater.diamond.server.Server;
 import com.twocater.diamond.server.ServerFactory;
@@ -36,12 +37,14 @@ public class SpringXmlServerFactory implements ServerFactory {
 
         for (ConnectorConfig connectorConfig : serverConfig.getConnectorConfigs()) {
             ProtocolSupport protocol = ProtocolSupport.valueOf(connectorConfig.getProtocol());
-                      
+
             AbstractNettyConnectorFactory connectorFactory = (AbstractNettyConnectorFactory) Class.forName(protocol.getConnectorFactory()).newInstance();
             connectorFactory.setConnectorConfig(connectorConfig);
-            server.addConnector(connectorFactory.createConnector());
+            server.addConnector(connectorFactory.createConnector(server));
         }
 
+        HttpContext context = new HttpContext();
+        server.setServerContext(context);
         return server;
 
     }

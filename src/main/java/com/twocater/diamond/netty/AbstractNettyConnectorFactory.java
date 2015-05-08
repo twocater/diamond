@@ -6,6 +6,7 @@
 package com.twocater.diamond.netty;
 
 import com.twocater.diamond.Connector;
+import com.twocater.diamond.server.Server;
 import com.twocater.diamond.spring.ConnectorConfig;
 
 /**
@@ -20,15 +21,15 @@ public abstract class AbstractNettyConnectorFactory implements ConnectorFactory 
         this.connectorConfig = connectorConfig;
     }
 
-    protected abstract NettyHandlerFactory createHandlerFactory();
+    protected abstract NettyHandlerFactory createHandlerFactory(Server server, CoderFactory coderFactory);
 
     @Override
-    public Connector createConnector() {
-        NettyHandlerFactory nettyHandlerFactory = connectorConfig.getNettyHandlerFactory();
-        if (nettyHandlerFactory == null) {
-            nettyHandlerFactory = createHandlerFactory();
-        }
-        return new NettyConnector(connectorConfig, nettyHandlerFactory);
+    public Connector createConnector(Server server) {
+//        NettyHandlerFactory nettyHandlerFactory = connectorConfig.getNettyHandlerFactory();
+        CoderFactory coderFactory = null;
+        NettyHandlerFactory nettyHandlerFactory = createHandlerFactory(server, coderFactory);
+
+        return new NettyConnector(connectorConfig, nettyHandlerFactory, server);
     }
 
 }

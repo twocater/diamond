@@ -6,7 +6,9 @@
 package com.twocater.diamond.netty.http;
 
 import com.twocater.diamond.netty.AbstractNettyConnectorFactory;
+import com.twocater.diamond.netty.CoderFactory;
 import com.twocater.diamond.netty.NettyHandlerFactory;
+import com.twocater.diamond.server.Server;
 
 /**
  *
@@ -15,8 +17,8 @@ import com.twocater.diamond.netty.NettyHandlerFactory;
 public class HttpConnectorFactory extends AbstractNettyConnectorFactory {
 
     @Override
-    protected NettyHandlerFactory createHandlerFactory() {
-        return new HttpHandlerFactory();
+    protected NettyHandlerFactory createHandlerFactory(Server server, CoderFactory coderFactory) {
+        return new HttpHandlerFactory(server, coderFactory);
     }
 
 }

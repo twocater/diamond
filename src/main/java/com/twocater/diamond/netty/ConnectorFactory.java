@@ -6,6 +6,7 @@
 package com.twocater.diamond.netty;
 
 import com.twocater.diamond.Connector;
+import com.twocater.diamond.server.Server;
 
 /**
  *
@@ -13,5 +14,5 @@ import com.twocater.diamond.Connector;
  */
 public interface ConnectorFactory {
 
-    Connector createConnector();
+    Connector createConnector(Server server);
 }

@@ -6,6 +6,7 @@
 package com.twocater.diamond.netty;
 
 import com.twocater.diamond.Connector;
+import com.twocater.diamond.server.Server;
 import com.twocater.diamond.spring.ConnectorConfig;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -30,9 +31,12 @@ public class NettyConnector implements Connector {
     EventLoopGroup bossGroup;
     EventLoopGroup workerGroup;
 
-    public NettyConnector(ConnectorConfig connectorConfig, NettyHandlerFactory nettyHandlerFactory) {
+    private final Server server;
+
+    public NettyConnector(ConnectorConfig connectorConfig, NettyHandlerFactory nettyHandlerFactory, Server server) {
         this.connectorConfig = connectorConfig;
         this.nettyHandlerFactory = nettyHandlerFactory;
+        this.server = server;
     }
 
     @Override
