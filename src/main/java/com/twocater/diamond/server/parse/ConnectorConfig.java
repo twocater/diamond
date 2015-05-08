@@ -1,4 +1,4 @@
-package com.twocater.diamond.spring;
+package com.twocater.diamond.server.parse;
 
 import com.twocater.diamond.netty.NettyHandlerFactory;
 
@@ -7,7 +7,7 @@ public class ConnectorConfig {
     private int port;
     private String protocol;
 
-    private NettyHandlerFactory nettyHandlerFactory;
+    private String coderFactory;
 
     private int so_backlog_parent;
     private boolean so_reuseaddr_parent;
@@ -19,12 +19,12 @@ public class ConnectorConfig {
     private int so_sndbuf;
     private int so_rcvbuf;
 
-    public NettyHandlerFactory getNettyHandlerFactory() {
-        return nettyHandlerFactory;
+    public String getCoderFactory() {
+        return coderFactory;
     }
 
-    public void setNettyHandlerFactory(NettyHandlerFactory nettyHandlerFactory) {
-        this.nettyHandlerFactory = nettyHandlerFactory;
+    public void setCoderFactory(String coderFactory) {
+        this.coderFactory = coderFactory;
     }
 
     public int getPort() {

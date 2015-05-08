@@ -5,6 +5,7 @@
  */
 package com.twocater.diamond.protocol.http;
 
+import com.twocater.diamond.api.service.http.HttpPlainRequest;
 import com.twocater.diamond.server.AbstractContext;
 import com.twocater.diamond.server.ContextRequest;
 
@@ -12,7 +13,7 @@ import com.twocater.diamond.server.ContextRequest;
  *
  * @author cpaladin
  */
-public class HttpJsonContextRequest implements ContextRequest {
+public class HttpJsonContextRequest implements ContextRequest, HttpPlainRequest {
 
     public HttpJsonContextRequest(AbstractContext context, HttpServerRequest httpServerRequest) {
 

@@ -9,8 +9,8 @@ package com.twocater.diamond.server;
  *
  * @author cpaladin
  */
-public interface ServerContext  {
-    
-    public void handle(ServerRequest request);
-    
+public interface ServerContext {
+
+    public void handle(ServerRequest request) throws Exception;
+
 }

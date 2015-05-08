@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.twocater.diamond.netty;
-
-import com.twocater.diamond.Connector;
-import com.twocater.diamond.server.Server;
+package com.twocater.diamond.api.service;
 
 /**
  *
  * @author cpaladin
  */
-public interface ConnectorFactory {
-
-    Connector createConnector(Server server) throws Exception;
+public interface Request {
+    
 }

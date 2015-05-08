@@ -7,7 +7,7 @@ package com.twocater.diamond.netty;
 
 import com.twocater.diamond.Connector;
 import com.twocater.diamond.server.Server;
-import com.twocater.diamond.spring.ConnectorConfig;
+import com.twocater.diamond.server.parse.ConnectorConfig;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
