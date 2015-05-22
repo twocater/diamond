@@ -20,7 +20,7 @@
     </bean>
 
     <bean id="connectorConfig1" class="com.twocater.diamond.spring.ConnectorConfig">
-        <property name="coderFactory" value="com.twocater.diamond.netty.http.HttpCoderFactory"/>
+        <property name="handlerFactory" value="com.twocater.diamond.netty.http.HttpHandlerFactory"/>
         <property name="port" value="80" />
         <property name="protocol" value="http" />
 		

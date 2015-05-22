@@ -26,6 +26,7 @@ import java.util.Map;
  */
 public abstract class AbstractContext implements ServerContext, LifeCycle {
 
+    protected Server server;
     /**
      * 过滤器，初始化时设定，有顺序
      */
@@ -90,6 +91,11 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
 
     @Override
     public void stop() throws Exception {
+    }
+
+    @Override
+    public void setServer(Server server) {
+        this.server = server;
     }
 
     protected abstract ContextRequest createRequest(ServerRequest serverRequest);

@@ -12,5 +12,7 @@ package com.twocater.diamond.server;
 public interface ServerContext {
 
     public void handle(ServerRequest request) throws Exception;
+    
+    public void setServer(Server server);
 
 }

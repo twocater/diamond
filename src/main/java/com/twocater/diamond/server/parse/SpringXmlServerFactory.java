@@ -34,9 +34,6 @@ public class SpringXmlServerFactory implements ServerFactory {
             connectorFactory.setConnectorConfig(connectorConfig);
             server.addConnector(connectorFactory.createConnector(server));
         }
-
-        HttpContext context = new HttpContext();
-        server.setServerContext(context);
         return server;
 
     }

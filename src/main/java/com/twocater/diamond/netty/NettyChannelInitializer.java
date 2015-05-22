@@ -1,6 +1,5 @@
 package com.twocater.diamond.netty;
 
-import com.twocater.diamond.server.Server;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOutboundHandlerAdapter;

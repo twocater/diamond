@@ -5,10 +5,12 @@
  */
 package com.twocater.diamond.api.service.http;
 
+import com.twocater.diamond.api.protocol.http.HttpResponse;
+
 /**
  *
  * @author cpaladin
  */
-public interface HttpPlainResponse {
+public interface HttpPlainResponse extends HttpResponse {
 
 }

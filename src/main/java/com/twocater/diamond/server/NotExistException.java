@@ -1,4 +1,4 @@
-package com.xunlei.game.frame.container;
+package com.twocater.diamond.server;
 
 public class NotExistException extends Exception {
 

@@ -5,15 +5,12 @@
  */
 package com.twocater.diamond.protocol.http;
 
-import com.twocater.diamond.server.AbstractContext;
+import com.twocater.diamond.api.protocol.http.HttpResponse;
 
 /**
  *
  * @author cpaladin
  */
-public class HttpMapContextRequest {
+public interface HttpJsonResponse extends HttpResponse {
 
-    public HttpMapContextRequest(AbstractContext context, HttpServerRequest httpServerRequest) {
-
-    }
 }

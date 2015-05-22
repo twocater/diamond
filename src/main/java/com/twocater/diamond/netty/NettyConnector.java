@@ -7,7 +7,9 @@ package com.twocater.diamond.netty;
 
 import com.twocater.diamond.Connector;
 import com.twocater.diamond.server.Server;
+import com.twocater.diamond.server.ServerContext;
 import com.twocater.diamond.server.parse.ConnectorConfig;
+import com.twocater.diamond.server.parse.ProtocolSupport;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -31,12 +33,18 @@ public class NettyConnector implements Connector {
     EventLoopGroup bossGroup;
     EventLoopGroup workerGroup;
 
-    private final Server server;
+    private final ServerContext serverContext;
 
-    public NettyConnector(ConnectorConfig connectorConfig, NettyHandlerFactory nettyHandlerFactory, Server server) {
+    public NettyConnector(ConnectorConfig connectorConfig, NettyHandlerFactory nettyHandlerFactory, Server server) throws Exception {
         this.connectorConfig = connectorConfig;
         this.nettyHandlerFactory = nettyHandlerFactory;
-        this.server = server;
+
+        ProtocolSupport protocol = ProtocolSupport.valueOf(connectorConfig.getProtocol());
+        this.serverContext = (ServerContext) Class.forName(protocol.getServerContext()).newInstance();
+        this.serverContext.setServer(server);
+
+        ((AbstractHandlerFactory) nettyHandlerFactory).setServerContext(serverContext);
+
     }
 
     @Override
@@ -51,7 +59,7 @@ public class NettyConnector implements Connector {
 
         serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup);
-        // serverBootstrap.handler(handler);
+        serverBootstrap.handler(this.nettyHandlerFactory.createServerHandler());
         serverBootstrap.channel(NioServerSocketChannel.class);
         serverBootstrap.childHandler(this.nettyHandlerFactory.createChildHandler());
 

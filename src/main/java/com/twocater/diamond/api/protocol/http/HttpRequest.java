@@ -12,4 +12,6 @@ package com.twocater.diamond.api.protocol.http;
 public interface HttpRequest {
  
     String getContentType();
+    
+    HttpResponse getResponse();
 }

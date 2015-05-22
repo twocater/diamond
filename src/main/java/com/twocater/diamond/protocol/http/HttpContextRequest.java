@@ -11,9 +11,13 @@ import com.twocater.diamond.server.AbstractContext;
  *
  * @author cpaladin
  */
-public class HttpMapContextRequest {
+abstract class HttpContextRequest extends AbstractContextRequest{
 
-    public HttpMapContextRequest(AbstractContext context, HttpServerRequest httpServerRequest) {
+    protected HttpServerRequest httpServerRequest;
 
+    public HttpContextRequest(AbstractContext abtractContext, HttpServerRequest httpServerRequest) {
+        super(abtractContext);
+        this.httpServerRequest = httpServerRequest;
     }
+
 }

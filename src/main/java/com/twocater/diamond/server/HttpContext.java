@@ -37,10 +37,10 @@ public class HttpContext extends AbstractContext {
                 contextRequest = new HttpPlainContextRequest(this, httpServerRequest);
                 break;
             case json:
-                contextRequest = new HttpJsonContextRequest(this, httpServerRequest);
+//                contextRequest = new HttpJsonContextRequest(this, httpServerRequest);
                 break;
             case tmap:
-                contextRequest = new HttpMapContextRequest(this, httpServerRequest);
+//                contextRequest = new HttpMapContextRequest(this, httpServerRequest);
                 break;
         }
         return contextRequest;

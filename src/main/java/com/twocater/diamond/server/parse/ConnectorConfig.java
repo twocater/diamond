@@ -7,7 +7,7 @@ public class ConnectorConfig {
     private int port;
     private String protocol;
 
-    private String coderFactory;
+    private String handlerFactory;
 
     private int so_backlog_parent;
     private boolean so_reuseaddr_parent;
@@ -19,12 +19,12 @@ public class ConnectorConfig {
     private int so_sndbuf;
     private int so_rcvbuf;
 
-    public String getCoderFactory() {
-        return coderFactory;
+    public String getHandlerFactory() {
+        return handlerFactory;
     }
 
-    public void setCoderFactory(String coderFactory) {
-        this.coderFactory = coderFactory;
+    public void setHandlerFactory(String handlerFactory) {
+        this.handlerFactory = handlerFactory;
     }
 
     public int getPort() {

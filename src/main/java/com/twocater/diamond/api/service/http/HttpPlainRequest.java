@@ -13,4 +13,5 @@ import com.twocater.diamond.api.protocol.http.HttpRequest;
  */
 public interface HttpPlainRequest extends HttpRequest {
 
+    HttpPlainResponse getResponse();
 }

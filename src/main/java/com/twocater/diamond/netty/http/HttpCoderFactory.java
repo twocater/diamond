@@ -8,6 +8,7 @@ package com.twocater.diamond.netty.http;
 import com.twocater.diamond.netty.CoderFactory;
 import com.twocater.diamond.netty.Nettyhandler;
 import com.twocater.diamond.server.Server;
+import com.twocater.diamond.server.ServerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.handler.codec.http.HttpObjectAggregator;
@@ -20,15 +21,15 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
  */
 public class HttpCoderFactory implements CoderFactory {
 
-    private final Server server;
+    private final ServerContext serverContext;
 
-    public HttpCoderFactory(Server server) {
-        this.server = server;
+    public HttpCoderFactory(ServerContext serverContext) {
+        this.serverContext = serverContext;
     }
 
     @Override
     public final ChannelInboundHandlerAdapter createHandler() {
-        return new Nettyhandler(server);
+        return new Nettyhandler(serverContext);
     }
 
     @Override
