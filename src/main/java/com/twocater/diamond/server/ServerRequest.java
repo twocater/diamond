@@ -11,4 +11,6 @@ package com.twocater.diamond.server;
  */
 public interface ServerRequest {
 
+	ConnectChannel getServerChannel();// 用于回复
+
 }

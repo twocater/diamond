@@ -6,9 +6,8 @@
 package com.twocater.diamond.protocol.http;
 
 import com.twocater.diamond.api.protocol.http.HttpResponse;
-import com.twocater.diamond.api.service.http.HttpPlainRequest;
+import com.twocater.diamond.api.service.http.HttpJsonRequest;
 import com.twocater.diamond.server.AbstractContext;
-import com.twocater.diamond.server.ContextRequest;
 
 /**
  *

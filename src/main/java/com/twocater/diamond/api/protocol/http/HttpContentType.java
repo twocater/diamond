@@ -1,4 +1,4 @@
-package com.xunlei.game.api.protocol.http;
+package com.twocater.diamond.api.protocol.http;
 
 public enum HttpContentType {
 

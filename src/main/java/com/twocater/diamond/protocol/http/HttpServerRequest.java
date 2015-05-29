@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.twocater.diamond.protocol.http;
 
+import com.twocater.diamond.server.ConnectChannel;
 import com.twocater.diamond.server.ServerRequest;
 
 /**
@@ -13,14 +9,22 @@ import com.twocater.diamond.server.ServerRequest;
  */
 public class HttpServerRequest implements ServerRequest {
 
-    private final HttpRequestMessage httpRequestMessage;
+	private final ConnectChannel connectChannel;
 
-    public HttpServerRequest(HttpRequestMessage httpRequestMessage) {
-        this.httpRequestMessage = httpRequestMessage;
-    }
+	private final HttpRequestMessage httpRequestMessage;
 
-    public HttpRequestMessage getHttpRequestMessage() {
-        return httpRequestMessage;
-    }
+	public HttpServerRequest(ConnectChannel connectChannel, HttpRequestMessage httpRequestMessage) {
+		this.connectChannel = connectChannel;
+		this.httpRequestMessage = httpRequestMessage;
+	}
+
+	public HttpRequestMessage getHttpRequestMessage() {
+		return httpRequestMessage;
+	}
+
+	@Override
+	public ConnectChannel getServerChannel() {
+		return connectChannel;
+	}
 
 }

@@ -7,7 +7,6 @@ package com.twocater.diamond.netty;
 
 import com.twocater.diamond.Connector;
 import com.twocater.diamond.server.Server;
-import com.twocater.diamond.server.ServerContext;
 import com.twocater.diamond.server.parse.ConnectorConfig;
 
 /**

@@ -1,17 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.twocater.diamond.api.protocol.http;
+
+import java.util.List;
 
 /**
  *
  * @author cpaladin
  */
 public interface HttpRequest {
- 
-    String getContentType();
-    
-    HttpResponse getResponse();
+
+	String getContentType();
+
+	HttpResponse getResponse();
+
+	// uri解析
+	String getPath();
+	
+	
+	// 请求头
+//	Map<String, List<String>> getHeaders();
+
+//	boolean containHeader(String name);
+
+	List<String> getHeaders(String name);
+
+	String getHeader(String name);
+
+//	Set<String> getHeaderNames();
 }

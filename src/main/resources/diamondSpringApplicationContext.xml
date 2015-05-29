@@ -8,7 +8,7 @@
           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <bean id="serverConfig" class="com.twocater.diamond.spring.ServerConfig">
+    <bean id="serverConfig" class="com.twocater.diamond.server.parse.ServerConfig">
         <property name="connectorConfigs">
             <list>
                 <ref bean="connectorConfig1" />
@@ -19,7 +19,7 @@
             
     </bean>
 
-    <bean id="connectorConfig1" class="com.twocater.diamond.spring.ConnectorConfig">
+    <bean id="connectorConfig1" class="com.twocater.diamond.server.parse.ConnectorConfig">
         <property name="handlerFactory" value="com.twocater.diamond.netty.http.HttpHandlerFactory"/>
         <property name="port" value="80" />
         <property name="protocol" value="http" />

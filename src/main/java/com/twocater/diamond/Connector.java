@@ -5,16 +5,20 @@
  */
 package com.twocater.diamond;
 
+import com.twocater.diamond.server.ServerContext;
+
 /**
  *
  * @author cpaladin
  */
 public interface Connector {
 
-    int getPort();
+	int getPort();
 
-    void bind() throws Exception;
+	void bind() throws Exception;
 
-    void unbind() throws Exception;
-    
+	void unbind() throws Exception;
+
+	ServerContext getServerConetxt();
+
 }

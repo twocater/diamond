@@ -5,11 +5,10 @@
  */
 package com.twocater.diamond.netty;
 
-import com.twocater.diamond.protocol.http.HttpRequestMessage;
-import com.twocater.diamond.protocol.http.HttpResponseMessage;
-import com.twocater.diamond.protocol.http.HttpServerRequest;
-import com.twocater.diamond.server.Server;
+import com.twocater.diamond.server.ConnectChannel;
 import com.twocater.diamond.server.ServerContext;
+import com.twocater.diamond.server.ServerRequest;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -17,23 +16,27 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  *
  * @author cpaladin
  */
-public class Nettyhandler extends ChannelInboundHandlerAdapter {
+public abstract class Nettyhandler extends ChannelInboundHandlerAdapter implements ConnectChannelFactory {
 
-//    private final Server server;
-    private final ServerContext serverContext;
+	// private final Server server;
+	private final ServerContext serverContext;
 
-    public Nettyhandler(ServerContext serverContext) {
-        this.serverContext = serverContext;
-    }
+	protected boolean keepAlive;
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        HttpRequestMessage httpRequestMessage = (HttpRequestMessage) msg;
-        HttpResponseMessage httpResponseMessage = httpRequestMessage.getResponse();
+	public Nettyhandler(ServerContext serverContext) {
+		this.serverContext = serverContext;
+	}
 
-        HttpServerRequest serverRequest = new HttpServerRequest(httpRequestMessage);
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
-        serverContext.handle(serverRequest);
-        ctx.writeAndFlush(httpResponseMessage);
-    }
+		ConnectChannel connectChannel = createConnectChannel(msg, ctx, keepAlive);
+		try {
+			ServerRequest serverRequest = connectChannel.read();
+			serverContext.handle(serverRequest);
+		} catch (Exception e) {
+			// log..
+			connectChannel.error(e);
+		}
+	}
 }

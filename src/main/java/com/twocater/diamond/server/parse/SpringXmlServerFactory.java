@@ -6,10 +6,11 @@
 package com.twocater.diamond.server.parse;
 
 import com.twocater.diamond.netty.AbstractNettyConnectorFactory;
-import com.twocater.diamond.server.HttpContext;
+import com.twocater.diamond.protocol.http.HttpContext;
 import com.twocater.diamond.server.NettyServer;
 import com.twocater.diamond.server.Server;
 import com.twocater.diamond.server.ServerFactory;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
