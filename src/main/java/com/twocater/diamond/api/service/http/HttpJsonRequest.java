@@ -6,11 +6,13 @@
 package com.twocater.diamond.api.service.http;
 
 import com.twocater.diamond.api.protocol.http.HttpRequest;
+import com.twocater.diamond.api.service.json.JsonEntry;
 
 /**
  *
  * @author cpaladin
  */
-public interface HttpJsonRequest extends HttpRequest {
-
+public interface HttpJsonRequest extends HttpRequest, JsonEntry {
+    // 回复数据
+    HttpJsonResponse getResponse();
 }

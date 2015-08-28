@@ -6,11 +6,12 @@
 package com.twocater.diamond.api.service.http;
 
 import com.twocater.diamond.api.protocol.http.HttpResponse;
+import com.twocater.diamond.api.service.plain.PlainEntryBuilder;
 
 /**
  *
  * @author cpaladin
  */
-public interface HttpPlainResponse extends HttpResponse {
+public interface HttpPlainResponse extends HttpResponse, PlainEntryBuilder {
 
 }
