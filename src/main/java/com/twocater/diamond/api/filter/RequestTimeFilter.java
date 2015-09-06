@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by chenzhiwei on 15-9-2.
  */
-public class RequestLogFilter implements Filter {
-    private static final Logger log = LoggerFactory.getLogger("request");
+public class RequestTimeFilter implements Filter {
+    private static final Logger log = LoggerFactory.getLogger("com.twocater.diamond.request");
 
     @Override
     public void init(FilterConfig config) throws Exception {
@@ -22,8 +22,9 @@ public class RequestLogFilter implements Filter {
     @Override
     public void doFilter(Request request, FilterChain chain) throws Exception {
         ContextRequest contextRequest = (ContextRequest) request;
-        log.info("{},{}", new Object[]{System.currentTimeMillis(), contextRequest.mappingService()});
+        long s = System.currentTimeMillis();
         chain.doFilter(request);
+        log.info("{}->{}->{}", new Object[]{System.currentTimeMillis(), contextRequest.mappingService(), System.currentTimeMillis() - s});
     }
 
     @Override

@@ -43,6 +43,7 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
     public void init() throws Exception {
         serverConfig = server.getServerConfig();
 
+        initListener();
         initFilter();
         initService();
     }
@@ -79,6 +80,20 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
                 serviceMappings.put(url, name);
             }
             log.info(LogMessage.INIT_SERVICE + name);
+        }
+    }
+
+    protected void initListener() throws Exception {
+        List<EventListener> listeners = serverConfig.getListeners();
+        for (EventListener listener : listeners) {
+            this.listeners.add(listener);
+            log.info(LogMessage.INIT_LISTENER + listener.getClass().getName());
+        }
+        // 初始化监听器
+        for (EventListener listener : this.listeners) {
+            if (listener instanceof ContextListener) {
+                ((ContextListener) listener).contextInitialized(this);
+            }
         }
     }
 

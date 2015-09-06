@@ -1,6 +1,7 @@
 package com.twocater.diamond.core.server.parse;
 
 import java.util.Collections;
+import java.util.EventListener;
 import java.util.List;
 import java.util.Properties;
 
@@ -10,6 +11,7 @@ public class ServerConfig {
     private List<ConnectorConfig> connectorConfigs = Collections.emptyList();
     private List<ContextServiceConfig> serviceConfigs = Collections.emptyList();
     private List<ContextFilterConfig> filterConfigs = Collections.emptyList();
+    private List<EventListener> listeners = Collections.emptyList();
 
 
     public Properties getGlobalParams() {
@@ -42,5 +44,13 @@ public class ServerConfig {
 
     public void setFilterConfigs(List<ContextFilterConfig> filterConfigs) {
         this.filterConfigs = filterConfigs;
+    }
+
+    public List<EventListener> getListeners() {
+        return listeners;
+    }
+
+    public void setListeners(List<EventListener> listeners) {
+        this.listeners = listeners;
     }
 }

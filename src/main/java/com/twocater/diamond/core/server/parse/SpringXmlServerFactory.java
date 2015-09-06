@@ -6,7 +6,6 @@
 package com.twocater.diamond.core.server.parse;
 
 import com.twocater.diamond.core.netty.AbstractNettyConnectorFactory;
-import com.twocater.diamond.core.protocol.http.HttpContext;
 import com.twocater.diamond.core.server.NettyServer;
 import com.twocater.diamond.core.server.Server;
 import com.twocater.diamond.core.server.ServerFactory;
@@ -20,7 +19,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class SpringXmlServerFactory implements ServerFactory {
 
-    private static final String SPRING_APPLICATION_CONTEXT_XML = "diamondSpringApplicationContext.xml";
+    private static final String SPRING_APPLICATION_CONTEXT_XML = "diamond.xml";
 
     @Override
     public Server createServer() throws Exception {

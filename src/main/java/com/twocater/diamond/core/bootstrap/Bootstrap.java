@@ -5,14 +5,20 @@
  */
 package com.twocater.diamond.core.bootstrap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.management.ManagementFactory;
+
 /**
  * @author cpaladin
  */
 public class Bootstrap {
+    private Logger stdoutLog = LoggerFactory.getLogger(Bootstrap.class);
 
     public void boot() throws Exception {
-        System.out.println("==========boot server==========");
-        long start = System.currentTimeMillis();
+        stdoutLog.info("boot server...");
+        long start = ManagementFactory.getRuntimeMXBean().getStartTime();
         final SpringXmlServerLifeCycle lifeCycle = new SpringXmlServerLifeCycle();
         lifeCycle.init();
         lifeCycle.start();
@@ -30,8 +36,8 @@ public class Bootstrap {
                 }
             }
         });
-        String string = String.format("==========boot server success, use time:%d ms==========", System.currentTimeMillis() - start);
-        System.out.println(string);
+
+        stdoutLog.info("netty: DiamondServer Start OK. [{} MS]", new Object[]{System.currentTimeMillis() - start});
 
     }
 

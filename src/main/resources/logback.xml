@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="true" basescan="true" scanPeriod="30 seconds">
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
     <property name="log.base" value="/data1/diamond"/>
 
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <Target>System.out</Target>
         <encoder>
-            <pattern>%d %-5level [%thread] %logger{0}-> %msg%n</pattern>
+            <pattern>%d %-5level [%thread] %logger %msg%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
@@ -19,9 +19,25 @@
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d %-5level [%thread] %logger{0}-> %msg%n</pattern>
+            <pattern>%d %-5level [%thread] %logger-> %msg%n</pattern>
         </encoder>
     </appender>
+
+    <appender name="com.twocater.diamond.request" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}/logs/request-%d{yyyyMMddHH}.stat
+            </FileNamePattern>
+            <MaxHistory>180</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d->%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.twocater.diamond.request" level="info" additivity="false">
+        <appender-ref ref="com.twocater.diamond.request"/>
+    </logger>
 
     <logger name="com.twocater.diamond.server" level="debug" additivity="false">
         <appender-ref ref="com.twocater.diamond.server"/>

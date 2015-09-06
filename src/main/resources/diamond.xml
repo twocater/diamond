@@ -33,7 +33,7 @@
 
     <bean id="requestLogFilter" class="com.twocater.diamond.core.server.parse.ContextFilterConfig">
         <property name="filterName" value="requestLogFilter"/>
-        <property name="filterClass" value="com.twocater.diamond.api.filter.RequestLogFilter"/>
+        <property name="filterClass" value="com.twocater.diamond.api.filter.RequestTimeFilter"/>
         <property name="filterPaths">
             <list>
                 <value>/</value>
