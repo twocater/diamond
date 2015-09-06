@@ -18,7 +18,7 @@ import java.util.*;
  * @author cpaladin
  */
 public abstract class AbstractContext implements ServerContext, LifeCycle {
-    private static final Logger log = LoggerFactory.getLogger("context");
+    private static final Logger log = LoggerFactory.getLogger("com.twocater.diamond.server");
 
     protected Server server;
     /**
