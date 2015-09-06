@@ -5,14 +5,17 @@
  */
 package com.twocater.diamond.core.server;
 
+import org.slf4j.Logger;
+
 /**
- *
  * @author cpaladin
  */
 public interface ServerContext {
 
-    public void handle(ServerRequest request) throws Exception;
-    
+    public Logger getLog();
+
+    public void handle(ServerRequest serverRequest) throws Exception;
+
     public void setServer(Server server);
 
 }

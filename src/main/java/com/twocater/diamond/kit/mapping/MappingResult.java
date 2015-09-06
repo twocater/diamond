@@ -1,4 +1,4 @@
-package com.twocater.kit.mapping;
+package com.twocater.diamond.kit.mapping;
 
 public class MappingResult {
 

@@ -24,7 +24,21 @@
             </list>
         </property>
 
+        <property name="filterConfigs">
+            <list>
+                <ref bean="requestLogFilter"/>
+            </list>
+        </property>
+    </bean>
 
+    <bean id="requestLogFilter" class="com.twocater.diamond.core.server.parse.ContextFilterConfig">
+        <property name="filterName" value="requestLogFilter"/>
+        <property name="filterClass" value="com.twocater.diamond.api.filter.RequestLogFilter"/>
+        <property name="filterPaths">
+            <list>
+                <value>/</value>
+            </list>
+        </property>
     </bean>
 
     <bean id="echoHttpService" class="com.twocater.diamond.core.server.parse.ContextServiceConfig">

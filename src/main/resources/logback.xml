@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" basescan="true" scanPeriod="30 seconds">
+	<property name="log.base" value="/data1/config-server" />
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<Target>System.out</Target>
+		<encoder>
+			<pattern>%d %-5level [%thread] %logger{0}: %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+
+	<appender name="runtimeAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/logs/runtime-%d{yyyyMMdd}.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/logs/debug-%d{yyyyMMdd}.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="configRequestAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/logs/configRequest-%d{yyyyMMddHH}.stat
+			</FileNamePattern>
+			<MaxHistory>180</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="configStatAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/logs/configStat-%d{yyyyMMddHH}.stat
+			</FileNamePattern>
+			<MaxHistory>180</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="flowConfigRequestAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/logs/flowConfigRequest-%d{yyyyMMddHH}.stat
+			</FileNamePattern>
+			<MaxHistory>180</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ipPatternConfigRequestAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/logs/ipPatternConfigRequest-%d{yyyyMMddHH}.stat
+			</FileNamePattern>
+			<MaxHistory>180</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+	</appender>
+
+
+	<!--全局设置 -->
+	<logger name="httpclient.wire" level="INFO" />
+	<logger name="net.rubyeye.xmemcached" level="WARN" />
+	<logger name="com.google.code.yanf4j" level="WARN" />
+	<logger name="org.quartz" level="WARN" />
+	<logger name="org.springframework" level="INFO" />
+	<logger name="org.apache.mina" level="INFO" />
+	<logger name="org.apache.http" level="INFO" />
+	<logger name="org.apache.commons.beanutils" level="WARN" />
+	<logger name="org.apache.commons.httpclient" level="INFO" />
+	<logger name="com.mchange" level="WARN" />
+	<logger name="com.xunlei.jdbc.typematcher" level="OFF" />
+	<logger name="com.xunlei.jdbc" level="INFO" />
+	<logger name="com.xunlei.memcached" level="INFO" />
+
+	<logger name="alarm.com.xunlei.netty" level="info" additivity="false">
+		<appender-ref ref="stdout"></appender-ref>
+	</logger>
+
+	<logger name="test" level="debug" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+	<logger name="runtime" level="debug" additivity="false">
+		<appender-ref ref="runtimeAppender" />
+	</logger>
+	<logger name="configRequest" level="debug" additivity="false">
+		<appender-ref ref="configRequestAppender" />
+	</logger>
+	<logger name="configStat" level="debug" additivity="false">
+		<appender-ref ref="configStatAppender" />
+	</logger>
+	<logger name="flowConfigRequest" level="debug" additivity="false">
+		<appender-ref ref="flowConfigRequestAppender" />
+	</logger>
+	<logger name="ipPatternConfigRequest" level="debug" additivity="false">
+		<appender-ref ref="ipPatternConfigRequestAppender" />
+	</logger>
+	<logger name="debug" level="${logback.debugLogger.level}" additivity="false">
+		<appender-ref ref="debugAppender" />
+	</logger>
+
+	<root level="DEBUG">
+		<appender-ref ref="stdout" />
+	</root>
+</configuration>

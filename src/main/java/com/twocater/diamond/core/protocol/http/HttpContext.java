@@ -4,10 +4,10 @@ import com.twocater.diamond.api.protocol.http.HttpContentType;
 import com.twocater.diamond.core.server.AbstractContext;
 import com.twocater.diamond.core.server.ContextRequest;
 import com.twocater.diamond.core.server.ServerRequest;
-import com.twocater.kit.mapping.MatchMapping;
-import com.twocater.kit.mapping.SingleMapping;
-import com.twocater.kit.mapping.UriMapping;
-import com.twocater.kit.mapping.UriMatchMapping;
+import com.twocater.diamond.kit.mapping.MatchMapping;
+import com.twocater.diamond.kit.mapping.SingleMapping;
+import com.twocater.diamond.kit.mapping.UriMapping;
+import com.twocater.diamond.kit.mapping.UriMatchMapping;
 
 import java.util.Map;
 

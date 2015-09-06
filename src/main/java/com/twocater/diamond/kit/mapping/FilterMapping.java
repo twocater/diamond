@@ -1,4 +1,4 @@
-package com.twocater.kit.mapping;
+package com.twocater.diamond.kit.mapping;
 
 import java.util.ArrayList;
 import java.util.HashSet;

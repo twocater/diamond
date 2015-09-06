@@ -1,4 +1,4 @@
-package com.twocater.kit.mapping;
+package com.twocater.diamond.kit.mapping;
 
 import java.util.List;
 import java.util.Map;

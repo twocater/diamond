@@ -1,4 +1,4 @@
-package com.twocater.util;
+package com.twocater.diamond.util;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;

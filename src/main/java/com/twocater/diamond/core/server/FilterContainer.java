@@ -4,7 +4,7 @@ import com.twocater.diamond.api.service.Filter;
 import com.twocater.diamond.api.service.FilterChain;
 import com.twocater.diamond.api.service.FilterConfig;
 import com.twocater.diamond.api.service.Request;
-import com.twocater.kit.mapping.MatchMapping;
+import com.twocater.diamond.kit.mapping.MatchMapping;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

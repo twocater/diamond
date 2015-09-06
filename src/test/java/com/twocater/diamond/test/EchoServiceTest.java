@@ -20,6 +20,7 @@ public class EchoServiceTest {
 
     @Test
     public void TestGet() {
+        System.out.println("########## TestGet ##########");
         HttpClient client = new HttpClient(IP, PORT, TIMEOUT, null, null);
         try {
             HttpMessage httpMessage = client.requestByGet("echo?a=a&b=b");
@@ -32,6 +33,7 @@ public class EchoServiceTest {
 
     @Test
     public void TestPost() {
+        System.out.println("########## TestPost ##########");
         HttpClient client = new HttpClient(IP, PORT, TIMEOUT, null, null);
 
         try {
@@ -47,6 +49,7 @@ public class EchoServiceTest {
 
     @Test
     public void TestJsonGet() {
+        System.out.println("########## TestJsonGet ##########");
         HttpJsonClient client = new HttpJsonClient(IP, PORT, TIMEOUT, null);
         try {
             HttpMessage httpMessage = client.requestByGet("echoJson?a=a&b=b");
@@ -59,6 +62,7 @@ public class EchoServiceTest {
 
     @Test
     public void TestJsonPost() {
+        System.out.println("########## TestJsonPost ##########");
         HttpJsonClient client = new HttpJsonClient(IP, PORT, TIMEOUT, null);
         try {
             Map<String, Object> map = new HashMap<>();

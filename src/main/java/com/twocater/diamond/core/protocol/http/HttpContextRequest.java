@@ -5,10 +5,9 @@ import java.util.Map;
 import java.util.Set;
 
 import com.twocater.diamond.api.protocol.http.HttpRequest;
-import com.twocater.diamond.api.protocol.http.HttpResponse;
 import com.twocater.diamond.core.server.AbstractContext;
 import com.twocater.diamond.core.context.AbstractContextRequest;
-import com.twocater.kit.mapping.MappingResult;
+import com.twocater.diamond.kit.mapping.MappingResult;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
 
@@ -18,6 +17,9 @@ import io.netty.handler.codec.http.HttpVersion;
 abstract class HttpContextRequest extends AbstractContextRequest implements HttpRequest {
 
     protected HttpServerRequest httpServerRequest;
+
+    private boolean mapped;
+    private String serviceName;
 
     public HttpContextRequest(AbstractContext abtractContext, HttpServerRequest httpServerRequest) {
         super(abtractContext);
@@ -54,6 +56,10 @@ abstract class HttpContextRequest extends AbstractContextRequest implements Http
 
     @Override
     public String mappingService() {
+        // 如果已经映射过服务，直接返回
+        if (mapped) {
+            return serviceName;
+        }
         String path = getFilterPath();
         System.out.println(path);
         MappingResult mappingResult = context.getServiceMapping().mapping(path);
@@ -62,7 +68,8 @@ abstract class HttpContextRequest extends AbstractContextRequest implements Http
         }
         // this.servicePath = mappingResult.getMappingPath();
         // this.pathInfo = mappingResult.getExtraPath();
-        return mappingResult.getDesName();
+        serviceName = mappingResult.getDesName();
+        return serviceName;
     }
 
     @Override

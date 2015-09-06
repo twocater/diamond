@@ -39,8 +39,8 @@ public class EchoHttpJsonService extends HttpJsonService {
         request.getResponse().addMapEntry("contentLength", contentLength);
         request.getResponse().addMapEntry("headers", headers);
         request.getResponse().addMapEntry("host", host);
-        request.getResponse().addMapEntry("method", method);
-        request.getResponse().addMapEntry("protocolVersion", protocolVersion);
+        request.getResponse().addMapEntry("method", method.toString());
+        request.getResponse().addMapEntry("protocolVersion", protocolVersion.toString());
         request.getResponse().addMapEntry("cookies", cookies);
         request.getResponse().addMapEntry("initParameterNames", initParameterNames);
         request.getResponse().addMapEntry("serviceName", serviceName);

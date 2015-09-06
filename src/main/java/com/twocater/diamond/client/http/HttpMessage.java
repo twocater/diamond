@@ -1,6 +1,6 @@
 package com.twocater.diamond.client.http;
 
-import com.twocater.util.HttpUtil;
+import com.twocater.diamond.util.HttpUtil;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.util.HashMap;

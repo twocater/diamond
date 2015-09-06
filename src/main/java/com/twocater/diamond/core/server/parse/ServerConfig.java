@@ -9,6 +9,8 @@ public class ServerConfig {
     private Properties globalParams;
     private List<ConnectorConfig> connectorConfigs = Collections.emptyList();
     private List<ContextServiceConfig> serviceConfigs = Collections.emptyList();
+    private List<ContextFilterConfig> filterConfigs = Collections.emptyList();
+
 
     public Properties getGlobalParams() {
         return globalParams;
@@ -34,4 +36,11 @@ public class ServerConfig {
         this.serviceConfigs = serviceConfigs;
     }
 
+    public List<ContextFilterConfig> getFilterConfigs() {
+        return filterConfigs;
+    }
+
+    public void setFilterConfigs(List<ContextFilterConfig> filterConfigs) {
+        this.filterConfigs = filterConfigs;
+    }
 }

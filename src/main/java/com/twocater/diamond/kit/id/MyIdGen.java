@@ -1,7 +1,6 @@
-package com.twocater.kit.id;
+package com.twocater.diamond.kit.id;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author chenzhiwei

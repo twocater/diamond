@@ -1,12 +1,11 @@
 package com.twocater.diamond.core.protocol.http;
 
 import com.twocater.diamond.api.protocol.http.HttpRequest;
-import com.twocater.util.HttpUtil;
+import com.twocater.diamond.util.HttpUtil;
 
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
-import io.netty.handler.codec.http.QueryStringDecoder;
 
 import java.util.Collections;
 import java.util.List;
