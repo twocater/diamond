@@ -18,9 +18,6 @@ abstract class HttpContextRequest extends AbstractContextRequest implements Http
 
     protected HttpServerRequest httpServerRequest;
 
-    private boolean mapped;
-    private String serviceName;
-
     public HttpContextRequest(AbstractContext abtractContext, HttpServerRequest httpServerRequest) {
         super(abtractContext);
         this.httpServerRequest = httpServerRequest;
@@ -58,7 +55,7 @@ abstract class HttpContextRequest extends AbstractContextRequest implements Http
     public String mappingService() {
         // 如果已经映射过服务，直接返回
         if (mapped) {
-            return serviceName;
+            return this.serviceName;
         }
         String path = getFilterPath();
         System.out.println(path);
@@ -66,10 +63,10 @@ abstract class HttpContextRequest extends AbstractContextRequest implements Http
         if (mappingResult == null) {
             return null;
         }
-        // this.servicePath = mappingResult.getMappingPath();
-        // this.pathInfo = mappingResult.getExtraPath();
-        serviceName = mappingResult.getDesName();
-        return serviceName;
+        this.servicePath = mappingResult.getMappingPath();
+        this.pathInfo = mappingResult.getExtraPath();
+        this.serviceName = mappingResult.getDesName();
+        return this.serviceName;
     }
 
     @Override

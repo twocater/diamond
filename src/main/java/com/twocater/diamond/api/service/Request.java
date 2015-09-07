@@ -5,10 +5,23 @@
  */
 package com.twocater.diamond.api.service;
 
+import com.twocater.diamond.core.server.ServerContext;
+
+import java.net.SocketAddress;
+
 /**
- *
  * @author cpaladin
  */
 public interface Request {
-    
+
+    SocketAddress getRemoteAddress();
+
+    SocketAddress getLocalAddress();
+
+    ServerContext getContext();
+
+    String getServicePath();
+
+    String getPathInfo();
+
 }

@@ -31,26 +31,63 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
     protected Map<String, ServiceContainer> services = new HashMap<String, ServiceContainer>();
 
     /**
-     * 监听器
+     * 监听器,初始化时设定，按增加先后顺序
      */
     protected List<EventListener> listeners = new ArrayList<EventListener>();
 
     protected SingleMapping serviceMapping;
 
     private ServerConfig serverConfig;
+    protected volatile boolean initialized = false;
 
     @Override
     public void init() throws Exception {
+        if (initialized) {
+            return;
+        }
+        long start = System.currentTimeMillis();
+        getLog().info("init context:" + this.getClass().getName());
+
         serverConfig = server.getServerConfig();
 
+        // init listeners
         initListener();
+        // context is initialized, notify  the ContextListener by calling the contextInitialized method of ContextListener
+        for (EventListener listener : this.listeners) {
+            if (listener instanceof ContextListener) {
+                ((ContextListener) listener).contextInitialized(this);
+            }
+        }
         initFilter();
         initService();
+
+        long end = System.currentTimeMillis();
+        getLog().info("init context:" + this.getClass().getName() + " success. [{} MS]", new Object[]{(end - start)});
+        initialized = true;
     }
 
     @Override
     public void destroy() throws Exception {
+        if (!initialized) {
+            return;
+        }
+        long start = System.currentTimeMillis();
+        getLog().info("destroy context:" + this.getClass().getName());
+        // context is destroyed, notify the ContextListener by calling the contextDestroyed method of ContextListener
+        for (EventListener eventListener : listeners) {
+            if (eventListener instanceof ContextListener) {
+                try {
+                    ((ContextListener) eventListener).contextDestroyed(this);
+                } catch (Exception e) {
+                    log.error("ContextListener.contextDestroyed:" + eventListener.getClass().getName(), ExceptionUtil.getExceptionInfo(e));
+                }
+            }
+        }
+        listeners.clear();
 
+        long end = System.currentTimeMillis();
+        getLog().info("destroy context:" + this.getClass().getName() + " success. [{} MS]", new Object[]{(end - start)});
+        initialized = false;
     }
 
     /**
@@ -83,20 +120,24 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
         }
     }
 
+    /**
+     * init listeners
+     *
+     * @throws Exception
+     */
     protected void initListener() throws Exception {
         List<EventListener> listeners = serverConfig.getListeners();
         for (EventListener listener : listeners) {
             this.listeners.add(listener);
             log.info(LogMessage.INIT_LISTENER + listener.getClass().getName());
         }
-        // 初始化监听器
-        for (EventListener listener : this.listeners) {
-            if (listener instanceof ContextListener) {
-                ((ContextListener) listener).contextInitialized(this);
-            }
-        }
     }
 
+    /**
+     * init filters
+     *
+     * @throws Exception
+     */
     protected void initFilter() throws Exception {
         MatchMapping filterMapping = createFilterMapping();
         List<ContextFilterConfig> filterConfigs = serverConfig.getFilterConfigs();

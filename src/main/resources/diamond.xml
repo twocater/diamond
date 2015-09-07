@@ -16,6 +16,7 @@
             </list>
         </property>
 
+        <!-- 服务配置列表 -->
         <property name="serviceConfigs">
 
             <list>
@@ -24,9 +25,18 @@
             </list>
         </property>
 
+        <!-- 过滤器配置列表 -->
         <property name="filterConfigs">
             <list>
                 <ref bean="requestLogFilter"/>
+            </list>
+        </property>
+
+        <!-- 监听器配置列表 -->
+        <property name="listeners">
+            <list>
+                <bean id="testContextListener" class="com.twocater.diamond.api.listener.TestContextListener"/>
+                <bean id="testRequestListener" class="com.twocater.diamond.api.listener.TestRequestListener"/>
             </list>
         </property>
     </bean>
@@ -70,6 +80,7 @@
         </property>
     </bean>
 
+    <!-- 连接器配置 -->
     <bean id="connectorConfig" class="com.twocater.diamond.core.server.parse.ConnectorConfig">
         <property name="handlerFactory" value="com.twocater.diamond.core.netty.http.HttpHandlerFactory"/>
         <property name="port" value="8888"/>

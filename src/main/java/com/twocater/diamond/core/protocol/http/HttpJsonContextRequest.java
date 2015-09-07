@@ -13,6 +13,7 @@ import com.twocater.diamond.api.service.json.JsonEntryData;
 import com.twocater.diamond.api.service.json.JsonSupport;
 import com.twocater.diamond.core.server.AbstractContext;
 
+import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -118,5 +119,15 @@ public class HttpJsonContextRequest extends HttpContextRequest implements HttpJs
             return null;
         }
         return Collections.unmodifiableMap(map);
+    }
+
+    @Override
+    public SocketAddress getRemoteAddress() {
+        return this.httpServerRequest.getServerChannel().getRemoteAddress();
+    }
+
+    @Override
+    public SocketAddress getLocalAddress() {
+        return this.httpServerRequest.getServerChannel().getLocalAddress();
     }
 }

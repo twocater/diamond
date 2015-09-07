@@ -5,6 +5,8 @@ import com.twocater.diamond.api.service.http.HttpPlainRequest;
 import com.twocater.diamond.api.service.http.HttpPlainResponse;
 import com.twocater.diamond.core.server.AbstractContext;
 
+import java.net.SocketAddress;
+
 /**
  * @author cpaladin
  */
@@ -42,5 +44,15 @@ public class HttpPlainContextRequest extends HttpContextRequest implements HttpP
     @Override
     public byte[] getData() {
         return this.httpServerRequest.getHttpRequestMessage().getData();
+    }
+
+    @Override
+    public SocketAddress getRemoteAddress() {
+        return this.httpServerRequest.getServerChannel().getRemoteAddress();
+    }
+
+    @Override
+    public SocketAddress getLocalAddress() {
+        return this.httpServerRequest.getServerChannel().getLocalAddress();
     }
 }
