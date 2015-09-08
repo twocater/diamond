@@ -1,4 +1,4 @@
-package com.twocater.diamond.api.listener;
+package com.twocater.diamond.ext.listener;
 
 import com.twocater.diamond.api.service.Request;
 import com.twocater.diamond.api.service.RequestListener;

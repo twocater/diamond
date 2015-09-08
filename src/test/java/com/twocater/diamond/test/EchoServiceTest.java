@@ -2,6 +2,8 @@ package com.twocater.diamond.test;
 
 import com.twocater.diamond.client.http.*;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -13,6 +15,7 @@ import java.util.Map;
  */
 public class EchoServiceTest {
 
+    private static Logger log = LoggerFactory.getLogger(EchoServiceTest.class);
     private static final String IP = "localhost";
     private static final int PORT = 8888;
     private static final int TIMEOUT = 10000;
@@ -20,12 +23,12 @@ public class EchoServiceTest {
 
     @Test
     public void TestGet() {
-        System.out.println("########## TestGet ##########");
+        log.info("########## TestGet ##########");
         HttpClient client = new HttpClient(IP, PORT, TIMEOUT, null, null);
         try {
             HttpMessage httpMessage = client.requestByGet("echo?a=a&b=b");
             String data = new String(httpMessage.getData(), RESPONSE_ENCODING);
-            System.out.println(data);
+            log.info(data);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -33,7 +36,7 @@ public class EchoServiceTest {
 
     @Test
     public void TestPost() {
-        System.out.println("########## TestPost ##########");
+        log.info("########## TestPost ##########");
         HttpClient client = new HttpClient(IP, PORT, TIMEOUT, null, null);
 
         try {
@@ -41,7 +44,7 @@ public class EchoServiceTest {
 
             HttpMessage httpMessage = client.requestByPost("echo?t=t&tt=tt", requestData);
             String data = new String(httpMessage.getData(), RESPONSE_ENCODING);
-            System.out.println(data);
+            log.info(data);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,12 +52,12 @@ public class EchoServiceTest {
 
     @Test
     public void TestJsonGet() {
-        System.out.println("########## TestJsonGet ##########");
+        log.info("########## TestJsonGet ##########");
         HttpJsonClient client = new HttpJsonClient(IP, PORT, TIMEOUT, null);
         try {
             HttpMessage httpMessage = client.requestByGet("echoJson?a=a&b=b");
             String data = new String(httpMessage.getData(), RESPONSE_ENCODING);
-            System.out.println(data);
+            log.info(data);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,14 +65,14 @@ public class EchoServiceTest {
 
     @Test
     public void TestJsonPost() {
-        System.out.println("########## TestJsonPost ##########");
+        log.info("########## TestJsonPost ##########");
         HttpJsonClient client = new HttpJsonClient(IP, PORT, TIMEOUT, null);
         try {
             Map<String, Object> map = new HashMap<>();
             map.put("pp", "pp");
             map.put("bb", "bb");
             HttpJsonMessage httpMessage = client.requestByPost("echoJson?a=a&b=b", map);
-            System.out.println(httpMessage.getEntryData());
+            log.info("{}", new Object[]{httpMessage.getEntryData()});
         } catch (Exception e) {
             e.printStackTrace();
         }

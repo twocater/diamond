@@ -9,13 +9,23 @@ import java.nio.charset.StandardCharsets;
  */
 public class ExceptionUtil {
     public static String getExceptionInfo(Throwable e) {
+        ByteArrayOutputStream byteArrayOutputStream = null;
+        PrintStream printStream = null;
         try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            PrintStream printStream = new PrintStream(byteArrayOutputStream);
+            byteArrayOutputStream = new ByteArrayOutputStream();
+            printStream = new PrintStream(byteArrayOutputStream);
             e.printStackTrace(printStream);
             return byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
         } catch (Exception ex) {
             return ExceptionUtil.class.getName() + ".getExceptionInfo exception," + ex.getMessage();
+        } finally {
+            if (printStream != null) {
+                try {
+                    printStream.close();
+                } catch (Exception ex) {
+
+                }
+            }
         }
 
     }

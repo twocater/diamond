@@ -14,17 +14,25 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- *根据spring xml文件创建server
+ * 根据spring xml文件创建server
+ *
  * @author cpaladin
  */
 public class SpringXmlServerFactory implements ServerFactory {
 
     private static final String SPRING_APPLICATION_CONTEXT_XML = "diamond.xml";
 
+    private static ApplicationContext applicationContext;
+
+
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
     @Override
     public Server createServer() throws Exception {
         NettyServer server = new NettyServer();
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(SPRING_APPLICATION_CONTEXT_XML);
+        applicationContext = new ClassPathXmlApplicationContext(SPRING_APPLICATION_CONTEXT_XML);
         ServerConfig serverConfig = applicationContext.getBean("serverConfig", ServerConfig.class);
 
         for (ConnectorConfig connectorConfig : serverConfig.getConnectorConfigs()) {

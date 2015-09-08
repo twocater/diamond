@@ -9,6 +9,7 @@ import com.twocater.diamond.core.server.ConnectChannel;
 import com.twocater.diamond.core.server.ServerContext;
 import com.twocater.diamond.core.server.ServerRequest;
 
+import com.twocater.diamond.util.ExceptionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -34,16 +35,14 @@ public abstract class Nettyhandler extends ChannelInboundHandlerAdapter implemen
             ServerRequest serverRequest = connectChannel.read();
             serverContext.handle(serverRequest);
         } catch (Exception e) {
-            // log..
-            System.out.println("netty handler exception....");
+            serverContext.getLog().error("channelRead error.{}", ExceptionUtil.getExceptionInfo(e));
             connectChannel.error(e);
         }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        System.out.println(this.getClass().getName());
-        cause.printStackTrace();
+        serverContext.getLog().error("exceptionCaught:{}--{}", new Object[]{ctx.channel().toString(), ExceptionUtil.getExceptionInfo(cause)});
         ctx.close();
     }
 }

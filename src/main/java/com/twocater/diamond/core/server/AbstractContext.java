@@ -3,12 +3,14 @@ package com.twocater.diamond.core.server;
 import com.twocater.diamond.api.service.*;
 import com.twocater.diamond.core.bootstrap.LifeCycle;
 import com.twocater.diamond.core.server.parse.ContextFilterConfig;
+import com.twocater.diamond.core.server.parse.ContextListenerConfig;
 import com.twocater.diamond.core.server.parse.ContextServiceConfig;
 import com.twocater.diamond.core.server.parse.ServerConfig;
 import com.twocater.diamond.kit.mapping.CacheSingleMapping;
 import com.twocater.diamond.kit.mapping.MatchMapping;
 import com.twocater.diamond.kit.mapping.SingleMapping;
 import com.twocater.diamond.util.ExceptionUtil;
+import com.twocater.diamond.util.LoggerConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +20,7 @@ import java.util.*;
  * @author cpaladin
  */
 public abstract class AbstractContext implements ServerContext, LifeCycle {
-    private static final Logger log = LoggerFactory.getLogger("com.twocater.diamond.server");
+    private static final Logger log = LoggerFactory.getLogger(LoggerConstant.SERVER);
 
     protected Server server;
     /**
@@ -62,7 +64,7 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
         initService();
 
         long end = System.currentTimeMillis();
-        getLog().info("init context:" + this.getClass().getName() + " success. [{} MS]", new Object[]{(end - start)});
+        getLog().info("init context:[{}]" + " success. [{} MS]", new Object[]{this.getClass().getName(), (end - start)});
         initialized = true;
     }
 
@@ -86,7 +88,7 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
         listeners.clear();
 
         long end = System.currentTimeMillis();
-        getLog().info("destroy context:" + this.getClass().getName() + " success. [{} MS]", new Object[]{(end - start)});
+        getLog().info("destroy context:[{}]" + " success. [{} MS]", new Object[]{this.getClass().getName(), (end - start)});
         initialized = false;
     }
 
@@ -97,6 +99,13 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
      */
 
     private void initService() throws Exception {
+        List<ContextServiceConfig> serviceConfigFromAnnotation = AnnotationSupport.getServiceConfigFromAnnotation();
+        serverConfig.getServiceConfigs().addAll(serviceConfigFromAnnotation);
+
+        for (ContextServiceConfig c : serviceConfigFromAnnotation) {
+            log.info("@annotation service:{},{},{}", new Object[]{c.getServiceName(), c.getServiceClass(), c.getOrder()});
+        }
+
         // service
         Map<String, String> serviceMappings = new HashMap<String, String>();// 路径-->名称
         serviceMapping = new CacheSingleMapping(createServiceMapping(serviceMappings)); // 映射服务
@@ -105,7 +114,7 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
         for (ContextServiceConfig serviceConfig : serviceConfigs) {
             String name = serviceConfig.getServiceName();
             if (services.containsKey(name)) {
-                log.warn(LogMessage.EXIST_SERVICE + name);
+                log.warn(LogMessage.EXIST_SERVICE + "[{},{},{}]", new Object[]{name, serviceConfig.getServiceClass(), serviceConfig.getOrder()});
                 continue;
             }
             Service service = (Service) createObject(serviceConfig.getServiceClass());
@@ -116,20 +125,7 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
             for (String url : serviceConfig.getServicePaths()) {
                 serviceMappings.put(url, name);
             }
-            log.info(LogMessage.INIT_SERVICE + name);
-        }
-    }
-
-    /**
-     * init listeners
-     *
-     * @throws Exception
-     */
-    protected void initListener() throws Exception {
-        List<EventListener> listeners = serverConfig.getListeners();
-        for (EventListener listener : listeners) {
-            this.listeners.add(listener);
-            log.info(LogMessage.INIT_LISTENER + listener.getClass().getName());
+            log.info(LogMessage.INIT_SERVICE + "[{},{},{}]", new Object[]{name, serviceConfig.getServiceClass(), serviceConfig.getOrder()});
         }
     }
 
@@ -139,14 +135,22 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
      * @throws Exception
      */
     protected void initFilter() throws Exception {
+        List<ContextFilterConfig> filterConfigFromAnnotation = AnnotationSupport.getFilterConfigFromAnnotation();
+        serverConfig.getFilterConfigs().addAll(filterConfigFromAnnotation);
+        for (ContextFilterConfig c : filterConfigFromAnnotation) {
+            log.info("@annotation filter:{},{},{}", new Object[]{c.getFilterName(), c.getFilterClass(), c.getOrder()});
+        }
+
+
         MatchMapping filterMapping = createFilterMapping();
         List<ContextFilterConfig> filterConfigs = serverConfig.getFilterConfigs();
+        Collections.sort(filterConfigs);
         Set<String> nameSet = new HashSet<String>();
         // init filter
         for (ContextFilterConfig filterConfig : filterConfigs) {
             String filterName = filterConfig.getFilterName();
             if (nameSet.contains(filterName)) {
-                log.warn(LogMessage.EXIST_FILTER + filterName);
+                log.warn(LogMessage.EXIST_FILTER + "[{},{},{}]", new Object[]{filterName, filterConfig.getFilterClass(), filterConfig.getOrder()});
                 continue;
             }
             nameSet.add(filterName);
@@ -155,7 +159,34 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
             FilterConfig config = new FilterConfigImpl(filterName, this, filterConfig.getParams());
             filterContainer.init(config);
             filters.add(filterContainer);
-            log.info(LogMessage.INIT_FILTER + filterName);
+            log.info(LogMessage.INIT_FILTER + "[{},{},{}]", new Object[]{filterName, filterConfig.getFilterClass(), filterConfig.getOrder()});
+        }
+    }
+
+    /**
+     * init listeners
+     *
+     * @throws Exception
+     */
+    protected void initListener() throws Exception {
+        List<ContextListenerConfig> listenerConfigFromAnnotation = AnnotationSupport.getListenerConfigFromAnnotation();
+        serverConfig.getListenerConfigs().addAll(listenerConfigFromAnnotation);
+        for (ContextListenerConfig c : listenerConfigFromAnnotation) {
+            log.info("@annotation listener:{},{},{}", new Object[]{c.getListenerClass(), c.getOrder()});
+        }
+
+        List<ContextListenerConfig> listenerConfigs = serverConfig.getListenerConfigs();
+        Collections.sort(listenerConfigs);
+        Set<String> nameSet = new HashSet<String>();
+        for (ContextListenerConfig listenerConfig : listenerConfigs) {
+            if (nameSet.contains(listenerConfig.getListenerClass())) {
+                log.warn(LogMessage.EXIST_LISTENER + "[{},{}]", new Object[]{listenerConfig.getListenerClass(), listenerConfig.getOrder()});
+                continue;
+            }
+            nameSet.add(listenerConfig.getListenerClass());
+            EventListener eventListener = (EventListener) createObject(listenerConfig.getListenerClass());
+            this.listeners.add(eventListener);
+            log.info(LogMessage.INIT_LISTENER + "[{},{}]", new Object[]{listenerConfig.getListenerClass(), listenerConfig.getOrder()});
         }
     }
 
@@ -230,6 +261,16 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
         return log;
     }
 
+    @Override
+    public Set<String> getInitParameterNames() {
+        return this.serverConfig.getParams().keySet();
+    }
+
+    @Override
+    public String getInitParameter(String name) {
+        return this.serverConfig.getParams().get(name);
+    }
+
     protected abstract ContextRequest createRequest(ServerRequest serverRequest);
 
     protected abstract MatchMapping createFilterMapping();
@@ -239,16 +280,11 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
     class LogMessage {
         public static final String EXIST_SERVICE = "service exists:";
         public static final String EXIST_FILTER = "filter exists:";
-        public static final String EXIST_DEPENDED_SERVICE = "dependedService exists:";
-        public static final String EXIST_ONE_OPERATION = "oneOperation exists:";
-        public static final String EXIST_TASK = "task exists:";
+        public static final String EXIST_LISTENER = "listener exists:";
 
-        public static final String INIT_LISTENER = "init [listener]:";
-        public static final String INIT_SERVICE = "init [service]:";
-        public static final String INIT_FILTER = "init [filter]:";
-        public static final String INIT_DEPENDED_SERVICE = "init [dependedService]:";
-        public static final String INIT_ONE_OPERATION = "init [oneOperation]:";
-        public static final String INIT_TASK = "init [task]:";
+        public static final String INIT_LISTENER = "init listener:";
+        public static final String INIT_SERVICE = "init service:";
+        public static final String INIT_FILTER = "init filter:";
 
     }
 

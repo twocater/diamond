@@ -8,7 +8,16 @@
           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
+    <context:component-scan base-package="com.twocater.diamond"/>
     <bean id="serverConfig" class="com.twocater.diamond.core.server.parse.ServerConfig">
+        <!-- 参数列表 -->
+        <property name="params">
+            <map>
+                <entry key="param1" value="value1"/>
+                <entry key="param2" value="value2"/>
+            </map>
+        </property>
+
         <!-- 连接器配置列表 -->
         <property name="connectorConfigs">
             <list>
@@ -28,32 +37,40 @@
         <!-- 过滤器配置列表 -->
         <property name="filterConfigs">
             <list>
-                <ref bean="requestLogFilter"/>
+                <ref bean="requestTimeFilter"/>
             </list>
         </property>
 
         <!-- 监听器配置列表 -->
-        <property name="listeners">
+        <property name="listenerConfigs">
             <list>
-                <bean id="testContextListener" class="com.twocater.diamond.api.listener.TestContextListener"/>
-                <bean id="testRequestListener" class="com.twocater.diamond.api.listener.TestRequestListener"/>
+                <ref bean="testRequestListener"/>
             </list>
         </property>
     </bean>
 
-    <bean id="requestLogFilter" class="com.twocater.diamond.core.server.parse.ContextFilterConfig">
+    <bean id="testRequestListener" class="com.twocater.diamond.core.server.parse.ContextListenerConfig">
+        <property name="listenerClass" value="com.twocater.diamond.ext.listener.TestRequestListener"/>
+    </bean>
+
+    <bean id="requestTimeFilter" class="com.twocater.diamond.core.server.parse.ContextFilterConfig">
         <property name="filterName" value="requestLogFilter"/>
-        <property name="filterClass" value="com.twocater.diamond.api.filter.RequestTimeFilter"/>
+        <property name="filterClass" value="com.twocater.diamond.ext.filter.RequestTimeFilter"/>
         <property name="filterPaths">
             <list>
                 <value>/</value>
             </list>
         </property>
+        <property name="params">
+            <map>
+                <entry key="slowTime" value="1000"/>
+            </map>
+        </property>
     </bean>
 
     <bean id="echoHttpService" class="com.twocater.diamond.core.server.parse.ContextServiceConfig">
         <property name="serviceName" value="echoHttpService"/>
-        <property name="serviceClass" value="com.twocater.diamond.test.service.EchoHttpService"/>
+        <property name="serviceClass" value="com.twocater.diamond.ext.service.EchoHttpService"/>
         <property name="order" value="1"/>
         <property name="params">
             <map>
@@ -71,7 +88,7 @@
 
     <bean id="echoHttpJsonService" class="com.twocater.diamond.core.server.parse.ContextServiceConfig">
         <property name="serviceName" value="echoHttpJsonService"/>
-        <property name="serviceClass" value="com.twocater.diamond.test.service.EchoHttpJsonService"/>
+        <property name="serviceClass" value="com.twocater.diamond.ext.service.EchoHttpJsonService"/>
         <property name="order" value="1"/>
         <property name="servicePaths">
             <list>

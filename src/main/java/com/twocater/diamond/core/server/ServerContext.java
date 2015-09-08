@@ -7,6 +7,8 @@ package com.twocater.diamond.core.server;
 
 import org.slf4j.Logger;
 
+import java.util.Set;
+
 /**
  * @author cpaladin
  */
@@ -17,5 +19,9 @@ public interface ServerContext {
     public void handle(ServerRequest serverRequest) throws Exception;
 
     public void setServer(Server server);
+
+    String getInitParameter(String name);
+
+    Set<String> getInitParameterNames();
 
 }

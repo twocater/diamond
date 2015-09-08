@@ -1,4 +1,4 @@
-package com.twocater.diamond.test.service;
+package com.twocater.diamond.ext.service;
 
 import com.twocater.diamond.api.protocol.http.HttpContentType;
 import com.twocater.diamond.api.service.ServiceConfig;

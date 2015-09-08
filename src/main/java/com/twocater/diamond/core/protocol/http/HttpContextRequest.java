@@ -58,7 +58,6 @@ abstract class HttpContextRequest extends AbstractContextRequest implements Http
             return this.serviceName;
         }
         String path = getFilterPath();
-        System.out.println(path);
         MappingResult mappingResult = context.getServiceMapping().mapping(path);
         if (mappingResult == null) {
             return null;

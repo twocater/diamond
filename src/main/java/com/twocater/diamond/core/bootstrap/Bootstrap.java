@@ -37,8 +37,18 @@ public class Bootstrap {
             }
         });
 
-        stdoutLog.info("netty: DiamondServer Start OK. [{} MS]", new Object[]{System.currentTimeMillis() - start});
+        // http://www.kammerl.de/ascii/AsciiSignature.php
+        String asciiJacky =
+                " ______      _____     ____       __    __       ____        __      _   ______   \n" +
+                        "(_  __ \\    (_   _)   (    )      \\ \\  / /      / __ \\      /  \\    / ) (_  __ \\  \n" +
+                        "  ) ) \\ \\     | |     / /\\ \\      () \\/ ()     / /  \\ \\    / /\\ \\  / /    ) ) \\ \\ \n" +
+                        " ( (   ) )    | |    ( (__) )     / _  _ \\    ( ()  () )   ) ) ) ) ) )   ( (   ) )\n" +
+                        "  ) )  ) )    | |     )    (     / / \\/ \\ \\   ( ()  () )  ( ( ( ( ( (     ) )  ) )\n" +
+                        " / /__/ /    _| |__  /  /\\  \\   /_/      \\_\\   \\ \\__/ /   / /  \\ \\/ /    / /__/ / \n" +
+                        "(______/    /_____( /__(  )__\\ (/          \\)   \\____/   (_/    \\__/    (______/  ";
 
+
+        System.err.println(asciiJacky + String.format("服务器启动完毕.[%d MS]", System.currentTimeMillis() - start));
     }
 
 }

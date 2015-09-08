@@ -1,4 +1,4 @@
-package com.twocater.diamond.test.service;
+package com.twocater.diamond.ext.service;
 
 import com.twocater.diamond.api.service.http.HttpJsonRequest;
 import com.twocater.diamond.api.service.http.HttpJsonService;

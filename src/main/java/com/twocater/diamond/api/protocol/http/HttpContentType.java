@@ -3,6 +3,7 @@ package com.twocater.diamond.api.protocol.http;
 public enum HttpContentType {
 
     plain("text/plain"), json("application/json"), tmap("application/octet-stream");
+    //还有xml，jsonp等
     private String type;
 
     private HttpContentType(String type) {

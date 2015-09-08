@@ -59,9 +59,6 @@ public class HttpConnectChannel implements ConnectChannel {
 
     @Override
     public void error(Exception e) throws Exception {
-        // 打印日志....
-        // .....
-        e.printStackTrace();
         if (e instanceof NotExistException) {
             message.getResponse().setStatus(HttpResponseStatus.NOT_FOUND);
         } else {
