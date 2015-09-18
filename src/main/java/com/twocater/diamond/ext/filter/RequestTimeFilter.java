@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
  * Created by chenzhiwei on 15-9-2.
  */
 public class RequestTimeFilter implements Filter {
-    private static final Logger log = LoggerFactory.getLogger(LoggerConstant.FILTER);
-    private static final Logger slowRequest = LoggerFactory.getLogger(LoggerConstant.FILTER);
     private int slowTime;
 
     @Override
@@ -31,9 +29,9 @@ public class RequestTimeFilter implements Filter {
         long s = System.currentTimeMillis();
         chain.doFilter(request);
         long t = System.currentTimeMillis() - s;
-        log.info("RequestTimeFilter->{}->{}->{}", new Object[]{System.currentTimeMillis(), contextRequest.mappingService(), t});
+        LoggerConstant.filterLog.info("RequestTimeFilter->{}->{}->{}", new Object[]{System.currentTimeMillis(), contextRequest.mappingService(), t});
         if (slowTime > 0 && t >= slowTime) {
-            slowRequest.warn("slowRequest->{}->{}->{}", new Object[]{System.currentTimeMillis(), contextRequest.mappingService(), t});
+            LoggerConstant.filterLog.warn("slowRequest->{}->{}->{}", new Object[]{System.currentTimeMillis(), contextRequest.mappingService(), t});
         }
     }
 

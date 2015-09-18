@@ -6,10 +6,9 @@ import java.util.Map.Entry;
 
 import com.twocater.diamond.core.protocol.http.HttpResponseMessage;
 
+import com.twocater.diamond.util.LoggerConstant;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelOutboundHandlerAdapter;
-import io.netty.channel.ChannelPromise;
+import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 
 /**
@@ -19,6 +18,7 @@ public class HttpEndoder extends ChannelOutboundHandlerAdapter {
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+        LoggerConstant.nettyHandlerLog.debug("{}", new Object[]{ctx.channel().toString()});
 
         HttpResponseMessage httpResponseMessage = (HttpResponseMessage) msg;
 
@@ -53,7 +53,19 @@ public class HttpEndoder extends ChannelOutboundHandlerAdapter {
         }
 
         response.headers().set(HttpHeaders.Names.CONTENT_LENGTH, response.content().readableBytes());
-//         response.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
-        ctx.write(response);
+        boolean keepAlive = httpResponseMessage.isKeepAlive();
+        response.headers().set(HttpHeaders.Names.CONNECTION, keepAlive ? HttpHeaders.Values.KEEP_ALIVE : HttpHeaders.Values.CLOSE);
+        if (!keepAlive) {
+            ctx.write(response).addListener(CLOSE);
+        } else {
+            ctx.write(response);
+        }
     }
+
+    private static ChannelFutureListener CLOSE = new ChannelFutureListener() {
+        @Override
+        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+            channelFuture.channel().close();
+        }
+    };
 }

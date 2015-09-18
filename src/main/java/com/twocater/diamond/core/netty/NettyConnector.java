@@ -47,6 +47,8 @@ public class NettyConnector implements Connector {
         this.serverContext.setServer(server);
 
         ((AbstractHandlerFactory) nettyHandlerFactory).setServerContext(serverContext);
+        ((AbstractHandlerFactory) nettyHandlerFactory).setKeepAlive(connectorConfig.isKeepAlive());
+        ((AbstractHandlerFactory) nettyHandlerFactory).setBussThread(connectorConfig.getBussThread());
 
     }
 
@@ -67,15 +69,15 @@ public class NettyConnector implements Connector {
             serverBootstrap.handler(serverHandler);
         }
         serverBootstrap.channel(NioServerSocketChannel.class);
-        serverBootstrap.childHandler(this.nettyHandlerFactory.createChildHandler());
+        serverBootstrap.childHandler(this.nettyHandlerFactory.createChildHandler(connectorConfig.getTimeout()));
 
         serverBootstrap.option(ChannelOption.SO_BACKLOG, connectorConfig.getSo_backlog_parent());
         serverBootstrap.option(ChannelOption.SO_REUSEADDR, connectorConfig.isSo_reuseaddr_parent());
 
-        // serverBootstrap.childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1000);//???
-        // serverBootstrap.childOptionption(ChannelOption.SO_TIMEOUT, 2000);
+//         serverBootstrap.childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1000);//??? 这个应该是给netty客户端连接用的？
+//        serverBootstrap.childOption(ChannelOption.SO_TIMEOUT, 5000);//??? 这里面的timeout是什么意思？
         serverBootstrap.childOption(ChannelOption.TCP_NODELAY, connectorConfig.isTcp_nodelay());
-        serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, connectorConfig.isSo_keepalive());
+        serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, connectorConfig.isKeepAlive());
 
         serverBootstrap.childOption(ChannelOption.SO_REUSEADDR, connectorConfig.isSo_reuseaddr());
         serverBootstrap.childOption(ChannelOption.SO_LINGER, connectorConfig.getSo_linger());

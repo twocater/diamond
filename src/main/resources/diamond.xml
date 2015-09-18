@@ -10,6 +10,7 @@
 
     <context:component-scan base-package="com.twocater.diamond"/>
 
+    <!-- 服务器配置  -->
     <bean id="serverConfig" class="com.twocater.diamond.core.server.parse.ServerConfig">
         <!-- 参数列表 -->
         <property name="params">
@@ -55,7 +56,7 @@
     </bean>
 
     <bean id="requestTimeFilter" class="com.twocater.diamond.core.server.parse.ContextFilterConfig">
-        <property name="filterName" value="requestLogFilter"/>
+        <property name="filterName" value="requestTimeFilter"/>
         <property name="filterClass" value="com.twocater.diamond.ext.filter.RequestTimeFilter"/>
         <property name="filterPaths">
             <list>
@@ -100,15 +101,17 @@
 
     <!-- 连接器配置 -->
     <bean id="connectorConfig" class="com.twocater.diamond.core.server.parse.ConnectorConfig">
-        <property name="handlerFactory" value="com.twocater.diamond.core.netty.http.HttpHandlerFactory"/>
         <property name="port" value="8888"/>
         <property name="protocol" value="http"/>
-
+        <property name="keepAlive" value="true"/>
+        <property name="timeout" value="2000"/>
+        <property name="handlerFactory" value="com.twocater.diamond.core.netty.http.HttpHandlerFactory"/>
+        <property name="bussThread" value="100" />
+        
         <property name="so_backlog_parent" value="128"/>
         <property name="so_reuseaddr_parent" value="true"/>
 
         <property name="tcp_nodelay" value="true"/>
-        <property name="so_keepalive" value="false"/>
         <property name="so_reuseaddr" value="true"/>
         <property name="so_linger" value="-1"/>
         <property name="so_sndbuf" value="20480"/>

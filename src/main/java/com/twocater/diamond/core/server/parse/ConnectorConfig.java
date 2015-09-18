@@ -1,23 +1,47 @@
 package com.twocater.diamond.core.server.parse;
 
-import com.twocater.diamond.core.netty.NettyHandlerFactory;
-
 public class ConnectorConfig {
 
-    private int port;
-    private String protocol;
-
-    private String handlerFactory;
+    private int port; // 服务器端口
+    private String protocol; // 服务器通信协议,http,tcp,udp
+    private boolean keepAlive; // 服务器是否支持长连接
+    private int timeout; // 超时时间，供netty超时处理器使用,timeout>0生效
+    private String handlerFactory; // 用户自定义的处理器工厂，需要实现com.twocater.diamond.core.netty.AbstractHandlerFactory
+    private int bussThread; // 业务线程数
 
     private int so_backlog_parent;
     private boolean so_reuseaddr_parent;
 
     private boolean tcp_nodelay;
-    private boolean so_keepalive;
+//    private boolean so_keepalive;
     private boolean so_reuseaddr;
     private int so_linger;
     private int so_sndbuf;
     private int so_rcvbuf;
+
+    public int getBussThread() {
+        return bussThread;
+    }
+
+    public void setBussThread(int bussThread) {
+        this.bussThread = bussThread;
+    }
+
+    public boolean isKeepAlive() {
+        return keepAlive;
+    }
+
+    public void setKeepAlive(boolean keepAlive) {
+        this.keepAlive = keepAlive;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
 
     public String getHandlerFactory() {
         return handlerFactory;
@@ -67,13 +91,13 @@ public class ConnectorConfig {
         this.tcp_nodelay = tcp_nodelay;
     }
 
-    public boolean isSo_keepalive() {
-        return so_keepalive;
-    }
-
-    public void setSo_keepalive(boolean so_keepalive) {
-        this.so_keepalive = so_keepalive;
-    }
+//    public boolean isSo_keepalive() {
+//        return so_keepalive;
+//    }
+//
+//    public void setSo_keepalive(boolean so_keepalive) {
+//        this.so_keepalive = so_keepalive;
+//    }
 
     public boolean isSo_reuseaddr() {
         return so_reuseaddr;

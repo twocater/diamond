@@ -46,15 +46,12 @@ public class HttpConnectChannel implements ConnectChannel {
         HttpResponseMessage response = message.getResponse();
         boolean keepAlive = response.isKeepAlive();
         // 如果服务器不支持长连接，修改response的keepalive为false
+
         if (keepAlive && !this.keepAlive) {
             keepAlive = false;
             response.setKeepAlive(keepAlive);
         }
-        ChannelFuture channelFuture = channelHandlerContext.writeAndFlush(response);
-        if (!keepAlive) {
-            channelFuture.addListener(ChannelFutureListener.CLOSE);
-        }
-
+        channelHandlerContext.write(response);
     }
 
     @Override

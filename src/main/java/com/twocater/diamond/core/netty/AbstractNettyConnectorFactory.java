@@ -10,7 +10,6 @@ import com.twocater.diamond.core.server.Server;
 import com.twocater.diamond.core.server.parse.ConnectorConfig;
 
 /**
- *
  * @author cpaladin
  */
 public abstract class AbstractNettyConnectorFactory implements ConnectorFactory {
@@ -25,9 +24,11 @@ public abstract class AbstractNettyConnectorFactory implements ConnectorFactory 
 
     @Override
     public Connector createConnector(Server server) throws Exception {
-        NettyHandlerFactory nettyHandlerFactory = createHandlerFactory();
+        NettyHandlerFactory nettyHandlerFactory;
         if (connectorConfig.getHandlerFactory() != null) {
             nettyHandlerFactory = (NettyHandlerFactory) Class.forName(connectorConfig.getHandlerFactory()).newInstance();
+        } else {
+            nettyHandlerFactory = createHandlerFactory();
         }
 
         return new NettyConnector(connectorConfig, nettyHandlerFactory, server);

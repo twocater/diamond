@@ -8,15 +8,58 @@
             <pattern>%d %-5level [%thread] %logger %msg%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
+            <level>WARN</level>
         </filter>
     </appender>
 
+    <appender name="com.twocater.diamond.debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}/logs/debug-%d{yyyyMMdd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%thread] %C -- %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="com.twocater.diamond.nettyHandler" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}/logs/nettyHandler-%d{yyyyMMdd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%thread] %C -- %msg%n</pattern>
+        </encoder>
+    </appender>
 
     <appender name="com.twocater.diamond.server" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${log.base}/logs/server-%d{yyyyMMdd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%thread] %C -- %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="com.twocater.diamond.error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}/logs/error-%d{yyyyMMdd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%thread] %C -- %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="com.twocater.diamond.timeout" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}/logs/timeout-%d{yyyyMMdd}.log</FileNamePattern>
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
         <encoder>
@@ -55,8 +98,24 @@
         <appender-ref ref="com.twocater.diamond.request"/>
     </logger>
 
+    <logger name="com.twocater.diamond.debug" level="debug" additivity="false">
+        <appender-ref ref="com.twocater.diamond.debug"/>
+    </logger>
+
+    <logger name="com.twocater.diamond.timeout" level="error" additivity="false">
+        <appender-ref ref="com.twocater.diamond.timeout"/>
+    </logger>
+
     <logger name="com.twocater.diamond.server" level="debug" additivity="false">
         <appender-ref ref="com.twocater.diamond.server"/>
+    </logger>
+
+    <logger name="com.twocater.diamond.error" level="error" additivity="false">
+        <appender-ref ref="com.twocater.diamond.error"/>
+    </logger>
+
+    <logger name="com.twocater.diamond.nettyHandler" level="debug" additivity="false">
+        <appender-ref ref="com.twocater.diamond.nettyHandler"/>
     </logger>
 
     <root level="DEBUG">

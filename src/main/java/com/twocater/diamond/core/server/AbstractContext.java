@@ -172,7 +172,7 @@ public abstract class AbstractContext implements ServerContext, LifeCycle {
         List<ContextListenerConfig> listenerConfigFromAnnotation = AnnotationSupport.getListenerConfigFromAnnotation();
         serverConfig.getListenerConfigs().addAll(listenerConfigFromAnnotation);
         for (ContextListenerConfig c : listenerConfigFromAnnotation) {
-            log.info("@annotation listener:{},{},{}", new Object[]{c.getListenerClass(), c.getOrder()});
+            log.info("@annotation listener:{},{}", new Object[]{c.getListenerClass(), c.getOrder()});
         }
 
         List<ContextListenerConfig> listenerConfigs = serverConfig.getListenerConfigs();

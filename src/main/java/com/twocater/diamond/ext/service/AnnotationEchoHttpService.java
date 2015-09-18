@@ -39,7 +39,6 @@ public class AnnotationEchoHttpService extends HttpPlainService {
 
         sb.append("InitParameterNames:").append(this.serviceConfig.getInitParameterNames()).append("\n");
         sb.append("ServiceName:").append(this.serviceConfig.getServiceName()).append("\n");
-        ;
 
         try {
             if (request.getData() != null) {

@@ -8,30 +8,39 @@ package com.twocater.diamond.core.netty;
 import com.twocater.diamond.core.server.ServerContext;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.concurrent.EventExecutorGroup;
 
 /**
- *
  * @author cpaladin
  */
 public abstract class AbstractHandlerFactory implements NettyHandlerFactory, CoderFactory {
 
     protected ServerContext serverContext;
+    protected boolean keepAlive;
+    protected int bussThread;
+
 
     public AbstractHandlerFactory() {
+    }
+
+    public void setBussThread(int bussThread) {
+        this.bussThread = bussThread;
     }
 
     public void setServerContext(ServerContext serverContext) {
         this.serverContext = serverContext;
     }
 
-    @Override
-    public ChannelInitializer createChildHandler() {
-        return new NettyChannelInitializer(this);
+    public void setKeepAlive(boolean keepAlive) {
+        this.keepAlive = keepAlive;
     }
 
+
     @Override
-    public ChannelHandlerAdapter createServerHandler() {
-        return null;
+    public ChannelInitializer createChildHandler(int timeout) {
+        return new NettyChannelInitializer(this, timeout, bussThread);
     }
 
 }

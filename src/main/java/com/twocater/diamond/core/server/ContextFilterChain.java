@@ -43,7 +43,7 @@ public class ContextFilterChain implements FilterChain {
         String serviceName = contextRequest.mappingService();
         Service service = services.get(serviceName);
         if (service == null) {
-            throw new NotExistException();
+            throw new NotExistException(contextRequest.getFilterPath());
         }
         service.service(request);
     }

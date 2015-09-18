@@ -10,7 +10,7 @@ public interface ContextRequest extends Request {
 
     String getFilterPath();
 
-    String mappingService();
+    String  mappingService();
 
     void response() throws Exception;
 }

@@ -1,16 +1,16 @@
 package com.twocater.diamond.core.netty.http;
 
+import com.twocater.diamond.core.netty.NettyHandler;
 import io.netty.channel.ChannelHandlerContext;
 
-import com.twocater.diamond.core.netty.Nettyhandler;
 import com.twocater.diamond.core.protocol.http.HttpRequestMessage;
 import com.twocater.diamond.core.server.ConnectChannel;
 import com.twocater.diamond.core.server.ServerContext;
 
-public class HttpNettyHandler extends Nettyhandler {
+public class HttpNettyHandler extends NettyHandler {
 
-	public HttpNettyHandler(ServerContext serverContext) {
-		super(serverContext);
+	public HttpNettyHandler(ServerContext serverContext, boolean keepAlive) {
+		super(serverContext, keepAlive);
 	}
 
 	@Override

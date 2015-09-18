@@ -13,6 +13,6 @@ public interface NettyHandlerFactory extends HandlerFactory {
 
     public ChannelHandlerAdapter createServerHandler();
 
-    public ChannelInitializer createChildHandler();
+    public ChannelInitializer createChildHandler(int timeout);
 
 }

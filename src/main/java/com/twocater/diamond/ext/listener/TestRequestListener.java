@@ -13,11 +13,11 @@ public class TestRequestListener implements RequestListener {
 
     @Override
     public void requestDestroyed(Request request) {
-        log.info("request initialized");
+//        log.info("request initialized");
     }
 
     @Override
     public void requestInitialized(Request request) {
-        log.info("request destroyed");
+//        log.info("request destroyed");
     }
 }
