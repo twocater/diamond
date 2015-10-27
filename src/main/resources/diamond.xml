@@ -82,8 +82,8 @@
         </property>
         <property name="servicePaths">
             <list>
-                <value>/echo</value>
-                <value>path2</value>
+                <value>/echoHttpService</value>
+                <value>echoHttpService1</value>
             </list>
         </property>
     </bean>
@@ -94,7 +94,7 @@
         <property name="order" value="1"/>
         <property name="servicePaths">
             <list>
-                <value>/echoJson</value>
+                <value>/echoHttpJsonService</value>
             </list>
         </property>
     </bean>

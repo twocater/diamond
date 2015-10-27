@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
  */
 
 @Service
-@AServiceMapper(paths = {"/echo", "echo1"}, params = {"param1=value1"})
+@AServiceMapper(paths = {"/AnnotationEchoHttpService", "AnnotationEchoHttpService1"}, params = {"param1=value1"})
 public class AnnotationEchoHttpService extends HttpPlainService {
 
     @Override
