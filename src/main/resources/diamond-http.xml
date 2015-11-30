@@ -102,7 +102,7 @@
     <!-- 连接器配置 -->
     <bean id="connectorConfig" class="com.twocater.diamond.core.server.parse.ConnectorConfig">
         <property name="port" value="8888"/>
-        <property name="protocol" value="tcp"/>
+        <property name="protocol" value="http"/>
         <property name="keepAlive" value="true"/>
         <property name="timeout" value="2000"/>
         <property name="handlerFactory" value="com.twocater.diamond.core.netty.http.HttpHandlerFactory"/>
