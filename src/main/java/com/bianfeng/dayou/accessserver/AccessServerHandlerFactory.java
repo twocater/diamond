@@ -16,12 +16,12 @@ public class AccessServerHandlerFactory extends AbstractHandlerFactory {
 
     @Override
     public ChannelInboundHandlerAdapter[] createDecoder() {
-        return new ChannelInboundHandlerAdapter[0];
+        return null;
     }
 
     @Override
     public ChannelOutboundHandlerAdapter[] createEncoder() {
-        return new ChannelOutboundHandlerAdapter[0];
+        return null;
     }
 
     @Override

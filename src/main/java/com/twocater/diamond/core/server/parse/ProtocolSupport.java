@@ -11,7 +11,8 @@ package com.twocater.diamond.core.server.parse;
  */
 public enum ProtocolSupport {
 
-    http("com.twocater.diamond.core.netty.http.HttpConnectorFactory", "com.twocater.diamond.core.protocol.http.HttpContext");
+    http("com.twocater.diamond.core.netty.http.HttpConnectorFactory", "com.twocater.diamond.core.protocol.http.HttpContext"),
+    tcp("com.twocater.diamond.core.netty.tcp.TcpConnectorFactory","com.twocater.diamond.core.protocol.tcp.TcpContext");
 
     private final String connectorFactory;
     private final String serverContext;
