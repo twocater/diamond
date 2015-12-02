@@ -1,4 +1,4 @@
-package com.twocater.diamond.ext.dayou;
+package com.bianfeng.dayou.accessserver;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -20,6 +20,8 @@ public class DayouDecoder extends ByteToMessageDecoder {
         }
         byte b1 = byteBuf.readByte();
         byte b2 = byteBuf.readByte();
-        byte b3 = byteBuf.readBytes(2);
+        byte b3 = byteBuf.readByte();
+        byte b4 = byteBuf.readByte();
+
     }
 }

@@ -1,4 +1,4 @@
-package com.twocater.diamond.ext.dayou;
+package com.bianfeng.dayou.accessserver;
 
 import com.twocater.diamond.core.netty.AbstractHandlerFactory;
 import io.netty.channel.ChannelHandlerAdapter;
