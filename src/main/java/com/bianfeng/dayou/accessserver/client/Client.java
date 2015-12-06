@@ -32,7 +32,8 @@ public class Client {
             longSocketIO.write(byteBuf.array());
             longSocketIO.flush();
 
-            System.in.read();
+            longSocketIO.readBytes(1);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

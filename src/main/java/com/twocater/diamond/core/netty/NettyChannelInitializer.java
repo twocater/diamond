@@ -36,8 +36,12 @@ public class NettyChannelInitializer extends ChannelInitializer<SocketChannel> {
             ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(timeout, TimeUnit.MILLISECONDS);
             ch.pipeline().addLast(readTimeoutHandler);
         }
-        for (ChannelOutboundHandlerAdapter encoder : coderFactory.createEncoder()) {
-            ch.pipeline().addLast(encoder);
+
+        ChannelOutboundHandlerAdapter[] encoders = coderFactory.createEncoder();
+        if (encoders != null) {
+            for (ChannelOutboundHandlerAdapter encoder : encoders) {
+                ch.pipeline().addLast(encoder);
+            }
         }
 
 

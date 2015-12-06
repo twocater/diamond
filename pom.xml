@@ -41,6 +41,17 @@
                 </configuration>
             </plugin>
 
+            <!-- 可以解决执行mvn test在控制台中文乱码问题 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <forkMode>once</forkMode>
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                </configuration>
+            </plugin>
+            
             <!-- 打测试包，放在[打发布包]插件前面 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

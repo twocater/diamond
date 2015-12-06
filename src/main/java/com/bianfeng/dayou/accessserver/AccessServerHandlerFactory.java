@@ -11,12 +11,12 @@ import io.netty.channel.ChannelOutboundHandlerAdapter;
 public class AccessServerHandlerFactory extends AbstractHandlerFactory {
     @Override
     public ChannelInboundHandlerAdapter createHandler() {
-        return null;
+        return new DayouNettyHandler(serverContext, keepAlive);
     }
 
     @Override
     public ChannelInboundHandlerAdapter[] createDecoder() {
-        return null;
+        return new ChannelInboundHandlerAdapter[]{new DayouDecoder()};
     }
 
     @Override

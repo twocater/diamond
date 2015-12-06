@@ -13,15 +13,18 @@ public class DayouDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
-
-        if (byteBuf.readableBytes() <4) {
+        if (byteBuf.readableBytes() < 4) {
             ///
             return;
         }
-        byte b1 = byteBuf.readByte();
-        byte b2 = byteBuf.readByte();
-        byte b3 = byteBuf.readByte();
-        byte b4 = byteBuf.readByte();
+        int b1 = byteBuf.readByte();
+        int b2 = byteBuf.readByte();
+        short command = byteBuf.readShort();
+
+        System.out.println(b1);
+        System.out.println(b2);
+        System.out.println(command);
+
 
     }
 }
