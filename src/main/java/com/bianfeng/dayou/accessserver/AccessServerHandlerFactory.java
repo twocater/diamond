@@ -16,7 +16,7 @@ public class AccessServerHandlerFactory extends AbstractHandlerFactory {
 
     @Override
     public ChannelInboundHandlerAdapter[] createDecoder() {
-        return new ChannelInboundHandlerAdapter[]{new DayouDecoder()};
+        return new ChannelInboundHandlerAdapter[]{new DayouDecoder(65535, 2, 2, 0, 0)};
     }
 
     @Override

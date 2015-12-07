@@ -1,12 +1,7 @@
 package com.bianfeng.dayou.accessserver.client;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
-import io.netty.buffer.UnpooledHeapByteBuf;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
 
 /**
  * Created by chenzhiwei on 15-12-2.

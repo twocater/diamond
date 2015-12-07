@@ -17,4 +17,10 @@ public class DayouNettyHandler extends NettyHandler {
     public ConnectChannel createConnectChannel(Object message, ChannelHandlerContext channelHandlerContext, boolean keepAlive) {
         return null;
     }
+
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+            System.out.println(msg);
+    }
 }
