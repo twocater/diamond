@@ -18,6 +18,7 @@ public class DayouDecoder extends LengthFieldBasedFrameDecoder {
         super(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip);
     }
 
+
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
         ByteBuf frame = (ByteBuf) super.decode(ctx, in);
@@ -25,34 +26,15 @@ public class DayouDecoder extends LengthFieldBasedFrameDecoder {
             return null;
         }
 
-        int b1 = frame.readByte();
-        int command = frame.readByte();
+        byte b1 = frame.readByte();
+        byte command = frame.readByte();
         int length = frame.readShort();
 
-        System.out.println(b1);
-        System.out.println(command);
-        System.out.println(length);
-        System.out.println(frame.readBytes(length).toString(StandardCharsets.UTF_8));
-        return new NettyMessage();
+        NettyMessage nettyMessage = new NettyMessage();
+        nettyMessage.setVersion((byte) ((b1 & 0xf0) >> 4));
+        nettyMessage.setEncrypt((byte) ((b1 & 0x08) >> 3));
+        nettyMessage.setCommand(command);
+        nettyMessage.setContent(frame.readBytes(length).array());
+        return nettyMessage;
     }
-
-    //    protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
-//        if (byteBuf.readableBytes() < 4) {
-//            ///
-//            return;
-//        }
-//        int b1 = byteBuf.readByte();
-//        int command = byteBuf.readByte();
-//        int length = byteBuf.readShort();
-//
-//        System.out.println(b1);
-//        System.out.println(command);
-//        System.out.println(length);
-//        if (byteBuf.readableBytes() < length) {
-//            return;
-//        }
-//        ByteBuf content = byteBuf.readBytes(length);
-//        System.out.println(content.toString(StandardCharsets.UTF_8));
-//
-//    }
 }

@@ -55,6 +55,7 @@ public abstract class NettyHandler extends ChannelInboundHandlerAdapter implemen
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
         try {
             if (cause instanceof ReadTimeoutException) {
                 LoggerConstant.timeoutLog.error("timeout:{},{}", new Object[]{ctx.channel().toString(), ExceptionUtil.getExceptionInfo(cause)});

@@ -21,6 +21,10 @@ public class DayouNettyHandler extends NettyHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            System.out.println(msg);
+        System.out.println(msg);
+        NettyMessage nettyMessage = (NettyMessage) msg;
+        short command = nettyMessage.getCommand();
+        System.out.println(command);
+        ctx.writeAndFlush(msg);
     }
 }

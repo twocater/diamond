@@ -16,10 +16,10 @@ public class Client {
             byte[] content = "hellllll".getBytes("utf-8");
 
             ByteBuf byteBuf = Unpooled.buffer(4);
-            // 00011000
-            byteBuf.writeByte(0x18);
-            // cmd:00000001
-            byteBuf.writeByte(0x01);
+            // 00021000
+            byteBuf.writeByte(0x28);
+            // cmd:00000010
+            byteBuf.writeByte(0x02);
             // length:
             byteBuf.writeShort(content.length);
 
@@ -27,8 +27,8 @@ public class Client {
             longSocketIO.write(byteBuf.array());
             longSocketIO.flush();
 
-            longSocketIO.readBytes(1);
-
+//            longSocketIO.readBytes(1);
+            System.in.read();
         } catch (Exception e) {
             e.printStackTrace();
         }
