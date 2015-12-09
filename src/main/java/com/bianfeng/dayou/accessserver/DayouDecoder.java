@@ -33,6 +33,7 @@ public class DayouDecoder extends LengthFieldBasedFrameDecoder {
         NettyMessage nettyMessage = new NettyMessage();
         nettyMessage.setVersion((byte) ((b1 & 0xf0) >> 4));
         nettyMessage.setEncrypt((byte) ((b1 & 0x08) >> 3));
+        nettyMessage.setLongConnection((byte) ((b1 & 0x04) >> 2));
         nettyMessage.setCommand(command);
         nettyMessage.setContent(frame.readBytes(length).array());
         return nettyMessage;

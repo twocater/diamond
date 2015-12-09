@@ -64,6 +64,7 @@ public class MyIdGen {
 //		System.out.println(r);
 //		System.out.println(Long.toBinaryString(r));
 		MyIdGen myIdGen = new MyIdGen();
+		System.out.println(myIdGen.createId());
 		System.out.println(Long.toBinaryString(myIdGen.createId()));
 		System.out.println(Long.toBinaryString(myIdGen.createId()));
 		System.out.println(Long.toBinaryString(myIdGen.createId()));

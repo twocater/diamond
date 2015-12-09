@@ -23,4 +23,8 @@ public class UuidGen implements IdGen {
 		return increase.get();
 	}
 
+	public static void main(String[] args) {
+		System.out.println(new UuidGen().createId());
+	}
+
 }

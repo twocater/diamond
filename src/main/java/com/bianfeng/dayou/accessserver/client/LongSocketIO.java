@@ -31,7 +31,7 @@ public class LongSocketIO implements SocketIO {
         }
         socket.setTcpNoDelay(noDelay);
         socket.setReuseAddress(reuseAddress);
-        socket.setKeepAlive(true);
+        socket.setKeepAlive(false);
         socket.connect(new InetSocketAddress(host, port), connectTimeout);
         in = new DataInputStream(socket.getInputStream());
         out = new BufferedOutputStream(socket.getOutputStream());

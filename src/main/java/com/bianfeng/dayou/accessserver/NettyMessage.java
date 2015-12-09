@@ -1,6 +1,7 @@
 package com.bianfeng.dayou.accessserver;
 
-import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2015/12/7.
@@ -8,8 +9,15 @@ import java.nio.charset.StandardCharsets;
 public class NettyMessage {
     private byte version;
     private byte encrypt;
+    private byte longConnection;
     private byte command;
-    private byte[] content;
+    private byte[] data;
+
+    private Map<String, String> params = new HashMap<String, String>();
+
+    public byte getLongConnection() {
+        return longConnection;
+    }
 
     public byte getVersion() {
         return version;
@@ -19,12 +27,13 @@ public class NettyMessage {
         return encrypt;
     }
 
-    public short getCommand() {
+    public byte getCommand() {
         return command;
     }
 
-    public byte[] getContent() {
-        return content;
+
+    public void setLongConnection(byte longConnection) {
+        this.longConnection = longConnection;
     }
 
     public void setVersion(byte version) {
@@ -39,8 +48,25 @@ public class NettyMessage {
         this.command = command;
     }
 
-    public void setContent(byte[] content) {
-        this.content = content;
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+
+    public byte[] getRawMessage() {
+        return null;
+    }
+
+    public void setParams(String paramName, String paramValue) {
+        this.params.put(paramName, paramValue);
+    }
+
+    public Map<String, String> getParams() {
+        return params;
     }
 
     @Override
@@ -48,8 +74,9 @@ public class NettyMessage {
         StringBuilder sb = new StringBuilder();
         sb.append("version:").append(version).append(",");
         sb.append("encrypt:").append(encrypt).append(",");
+        sb.append("longConnection:").append(longConnection).append(",");
         sb.append("command:").append(command).append(",");
-        sb.append("content:").append(new String(content, StandardCharsets.UTF_8));
         return sb.toString();
     }
+
 }
