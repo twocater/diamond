@@ -6,11 +6,13 @@ package com.bianfeng.dayou.loginserver;
 public class LoginProxy {
     public static final int SUCCESS = 1;
 
-    public static LoginResult login(byte[] message) {
-        LoginResult loginResult = new LoginResult();
+    public static LoginResponse login(byte[] message) {
+        LoginResponse response = new LoginResponse();
 
-        loginResult.setResult(SUCCESS);
-        loginResult.setSuccess(true);
-        return loginResult;
+        response.setResult(SUCCESS);
+        response.setSuccess(true);
+        response.setUserName("fffffuck");
+        response.setNickName("小小小．．．");
+        return response;
     }
 }

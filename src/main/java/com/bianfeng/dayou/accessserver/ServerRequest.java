@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2015/12/7.
  */
-public class NettyMessage {
+public class ServerRequest {
     private byte version;
     private byte encrypt;
     private byte longConnection;
@@ -61,7 +61,7 @@ public class NettyMessage {
         return null;
     }
 
-    public void setParams(String paramName, String paramValue) {
+    public void setParam(String paramName, String paramValue) {
         this.params.put(paramName, paramValue);
     }
 

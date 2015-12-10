@@ -1,12 +1,11 @@
 package com.bianfeng.dayou.accessserver;
 
-import com.bianfeng.dayou.loginserver.LoginResult;
+import com.bianfeng.dayou.loginserver.LoginResponse;
 import com.bianfeng.dayou.accessserver.server.LoginServer;
 import com.twocater.diamond.core.netty.NettyHandler;
 import com.twocater.diamond.core.server.ConnectChannel;
 import com.twocater.diamond.core.server.ServerContext;
 import com.twocater.diamond.kit.id.UuidGen;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.HashMap;
@@ -32,40 +31,59 @@ public class DayouNettyHandler extends NettyHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        NettyMessage nettyMessage = (NettyMessage) msg;
-        System.out.println(ctx);
+        ServerRequest request = (ServerRequest) msg;
         // old channel
         if (channels.containsValue(ctx.channel())) {
 
         } else { // new channel
-            if (nettyMessage.getLongConnection() == 1) { //　long connection
-                // auth user
-                LoginResult loginResult = LoginServer.login(nettyMessage.getMessage());
-                if (loginResult.isSuccess()) {
-                    channels.put(uuidGen.createId(), ctx);
-                    NettyMessage response = encode(nettyMessage, loginResult);
-                    ctx.writeAndFlush(response);
-                } else {
-                    // auth fail, close channel
-                    ctx.close();
-                }
-
+            if (request.getLongConnection() == 1) { //　long connection
+                // login auth
+                login(ctx, request);
             } else { // 客户端短连接
-                ctx.writeAndFlush(msg);
+                ServerResponse response = dispatch(request);
+                ctx.writeAndFlush(response).addListener(CLOSE);
             }
         }
-
-        System.out.println(ctx.channel().toString());
     }
 
-    private NettyMessage encode(NettyMessage request, LoginResult loginResult) {
-        NettyMessage nettyMessage = new NettyMessage();
-        nettyMessage.setCommand(request.getCommand());
-        nettyMessage.setEncrypt(request.getEncrypt());
-        nettyMessage.setLongConnection(request.getLongConnection());
-        nettyMessage.setVersion(request.getVersion());
+    private void login(ChannelHandlerContext ctx, ServerRequest serverRequest) {
+        LoginResponse loginResult = LoginServer.login(serverRequest.getRawMessage());
+        if (loginResult.isSuccess()) {
+            channels.put(uuidGen.createId(), ctx);
+        }
+        ServerResponse serverResponse = encode(loginResult, serverRequest);
+        if (loginResult.isSuccess()) {
+            ctx.writeAndFlush(serverResponse);
+        } else {
+            ctx.writeAndFlush(serverResponse).addListener(CLOSE);
+        }
+    }
 
-        return nettyMessage;
+    private ServerResponse login(ServerRequest serverRequest) {
+        LoginResponse loginResult = LoginServer.login(serverRequest.getRawMessage());
+        return encode(loginResult, serverRequest);
+    }
+
+    private ServerResponse encode(LoginResponse loginResult, ServerRequest serverRequest) {
+        ServerResponse serverResponse = new ServerResponse();
+        serverResponse.setResult((byte) loginResult.getResult());
+        serverResponse.setEncrypt(serverRequest.getEncrypt());
+        serverResponse.setLongConnection(serverRequest.getLongConnection());
+        serverResponse.setVersion(serverRequest.getVersion());
+        serverResponse.setParams("u", loginResult.getUserName());
+        serverResponse.setParams("n", loginResult.getNickName());
+
+        return serverResponse;
+    }
+
+    private ServerResponse dispatch(ServerRequest serverRequest) {
+        System.out.println(serverRequest);
+        switch (serverRequest.getCommand()) {
+            case 1:
+                return login(serverRequest);
+        }
+//        throw new IllegalStateException("unknown command.");
+        return new ServerResponse();
     }
 
 }

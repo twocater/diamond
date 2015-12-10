@@ -11,6 +11,8 @@ import com.twocater.diamond.core.server.ServerRequest;
 
 import com.twocater.diamond.util.ExceptionUtil;
 import com.twocater.diamond.util.LoggerConstant;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.ReadTimeoutException;
@@ -67,4 +69,11 @@ public abstract class NettyHandler extends ChannelInboundHandlerAdapter implemen
             serverContext.getLog().error("exceptionUnknown:{},{}", new Object[]{ctx.channel().toString(), ExceptionUtil.getExceptionInfo(cause)});
         }
     }
+
+    public static ChannelFutureListener CLOSE = new ChannelFutureListener() {
+        @Override
+        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+            channelFuture.channel().close();
+        }
+    };
 }

@@ -14,13 +14,12 @@ import java.util.Map;
 public class DayouEncoder extends MessageToByteEncoder {
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-        NettyMessage nettyMessage = (NettyMessage) msg;
-        out.writeByte(nettyMessage.getVersion() << 4 | nettyMessage.getEncrypt() << 3 | nettyMessage.getLongConnection() << 2);
-        out.writeByte(nettyMessage.getCommand());
+        ServerRequest serverRequest = (ServerRequest) msg;
+        out.writeByte(serverRequest.getVersion() << 4 | serverRequest.getEncrypt() << 3 | serverRequest.getLongConnection() << 2);
+        out.writeByte(serverRequest.getCommand());
 
         ByteBuf data = Unpooled.buffer();
-        int
-        for (Map.Entry<String,String> entry:nettyMessage.getParams().entrySet()) {
+        for (Map.Entry<String,String> entry:serverRequest.getParams().entrySet()) {
             if (entry.getKey() != null && entry.getValue() != null) {
                 byte[] key = entry.getKey().getBytes(StandardCharsets.UTF_8);
                 // 这里要判断key的长度是否溢出
@@ -30,15 +29,12 @@ public class DayouEncoder extends MessageToByteEncoder {
                 data.writeShort(value.length);
                 data.writeBytes(value);
             }
-
-
         }
-        if (nettyMessage.getContent() != null && nettyMessage.getContent().length > 0) {
-            out.writeShort(nettyMessage.getContent().length);
-            out.writeBytes(nettyMessage.getContent());
+        if (serverRequest.getParams() != null && serverRequest.getParams().size() > 0) {
+            out.writeShort(data.readableBytes());
+            out.writeBytes(data);
         } else {
             out.writeShort(0);
         }
-
     }
 }

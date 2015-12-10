@@ -2,12 +2,7 @@ package com.bianfeng.dayou.accessserver;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 /**
  * Created by chenzhiwei on 15-11-30.
@@ -30,12 +25,12 @@ public class DayouDecoder extends LengthFieldBasedFrameDecoder {
         byte command = frame.readByte();
         int length = frame.readShort();
 
-        NettyMessage nettyMessage = new NettyMessage();
-        nettyMessage.setVersion((byte) ((b1 & 0xf0) >> 4));
-        nettyMessage.setEncrypt((byte) ((b1 & 0x08) >> 3));
-        nettyMessage.setLongConnection((byte) ((b1 & 0x04) >> 2));
-        nettyMessage.setCommand(command);
-        nettyMessage.setContent(frame.readBytes(length).array());
-        return nettyMessage;
+        ServerRequest serverRequest = new ServerRequest();
+        serverRequest.setVersion((byte) ((b1 & 0xf0) >> 4));
+        serverRequest.setEncrypt((byte) ((b1 & 0x08) >> 3));
+        serverRequest.setLongConnection((byte) ((b1 & 0x04) >> 2));
+        serverRequest.setCommand(command);
+        serverRequest.setData(frame.readBytes(length).array());
+        return serverRequest;
     }
 }
