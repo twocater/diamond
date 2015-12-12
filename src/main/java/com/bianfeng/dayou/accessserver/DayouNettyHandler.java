@@ -1,7 +1,9 @@
 package com.bianfeng.dayou.accessserver;
 
-import com.bianfeng.dayou.loginserver.LoginResponse;
-import com.bianfeng.dayou.accessserver.server.LoginServer;
+import com.bianfeng.dayou.accessserver.server.ServerFactory;
+import com.bianfeng.dayou.gameloginserver.client.request.GameLoginRequest;
+import com.bianfeng.dayou.gameloginserver.client.response.GameLoginServerResponse;
+import com.bianfeng.dayou.accessserver.server.GameLoginSer;
 import com.twocater.diamond.core.netty.NettyHandler;
 import com.twocater.diamond.core.server.ConnectChannel;
 import com.twocater.diamond.core.server.ServerContext;
@@ -47,9 +49,11 @@ public class DayouNettyHandler extends NettyHandler {
     }
 
     private void login(ChannelHandlerContext ctx, ServerRequest serverRequest) {
-        LoginResponse loginResult = LoginServer.login(serverRequest.getRawMessage());
+        GameLoginRequest gameLoginRequest = ServerFactory.getInstance().getGameLoginSer().getGameLoginRequest(serverRequest);
+        GameLoginServerResponse loginResult = ServerFactory.getInstance().getGameLoginSer().login(gameLoginRequest);
         if (loginResult.isSuccess()) {
-            channels.put(uuidGen.createId(), ctx);
+            String key = loginResult.getUid() + "-" + gameLoginRequest.getGameId();
+            channels.put(key, ctx);
         }
         ServerResponse serverResponse = encode(loginResult, serverRequest);
         if (loginResult.isSuccess()) {
@@ -60,11 +64,11 @@ public class DayouNettyHandler extends NettyHandler {
     }
 
     private ServerResponse login(ServerRequest serverRequest) {
-        LoginResponse loginResult = LoginServer.login(serverRequest.getRawMessage());
+        GameLoginServerResponse loginResult = ServerFactory.getInstance().getGameLoginSer().login(serverRequest);
         return encode(loginResult, serverRequest);
     }
 
-    private ServerResponse encode(LoginResponse loginResult, ServerRequest serverRequest) {
+    private ServerResponse encode(GameLoginServerResponse loginResult, ServerRequest serverRequest) {
         ServerResponse serverResponse = new ServerResponse();
         serverResponse.setResult((byte) loginResult.getResult());
         serverResponse.setEncrypt(serverRequest.getEncrypt());
@@ -82,8 +86,8 @@ public class DayouNettyHandler extends NettyHandler {
             case 1:
                 return login(serverRequest);
         }
-//        throw new IllegalStateException("unknown command.");
-        return new ServerResponse();
+        throw new IllegalStateException("unknown command.");
+//        return new ServerResponse();
     }
 
 }

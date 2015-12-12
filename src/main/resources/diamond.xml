@@ -67,7 +67,7 @@
 
     <!-- 连接器配置 -->
     <bean id="connectorConfig" class="com.twocater.diamond.core.server.parse.ConnectorConfig">
-        <property name="port" value="8888"/>
+        <property name="port" value="9123"/>
         <property name="protocol" value="tcp"/>
         <property name="keepAlive" value="true"/>
         <property name="timeout" value="2000"/>

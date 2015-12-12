@@ -25,6 +25,8 @@ public class AccessServerProxy {
         serverRequest.setCommand((byte) 1);
         serverRequest.setParam("u", loginRequest.getUserName());
         serverRequest.setParam("p", loginRequest.getPassword());
+        serverRequest.setParam("t", loginRequest.getUserType() + "");
+        serverRequest.setParam("g", loginRequest.getGameId());
 
         AccessServerResponse serverResponse = sendRequest(serverRequest);
         LoginResponse loginResponse = new LoginResponse();

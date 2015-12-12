@@ -14,12 +14,12 @@ import java.util.Map;
 public class DayouEncoder extends MessageToByteEncoder {
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) throws Exception {
-        ServerRequest serverRequest = (ServerRequest) msg;
-        out.writeByte(serverRequest.getVersion() << 4 | serverRequest.getEncrypt() << 3 | serverRequest.getLongConnection() << 2);
-        out.writeByte(serverRequest.getCommand());
+        ServerResponse serverResponse = (ServerResponse) msg;
+        out.writeByte(serverResponse.getVersion() << 4 | serverResponse.getEncrypt() << 3 | serverResponse.getLongConnection() << 2);
+        out.writeByte(serverResponse.getResult());
 
         ByteBuf data = Unpooled.buffer();
-        for (Map.Entry<String,String> entry:serverRequest.getParams().entrySet()) {
+        for (Map.Entry<String, String> entry : serverResponse.getParams().entrySet()) {
             if (entry.getKey() != null && entry.getValue() != null) {
                 byte[] key = entry.getKey().getBytes(StandardCharsets.UTF_8);
                 // 这里要判断key的长度是否溢出
@@ -30,7 +30,7 @@ public class DayouEncoder extends MessageToByteEncoder {
                 data.writeBytes(value);
             }
         }
-        if (serverRequest.getParams() != null && serverRequest.getParams().size() > 0) {
+        if (serverResponse.getParams() != null && serverResponse.getParams().size() > 0) {
             out.writeShort(data.readableBytes());
             out.writeBytes(data);
         } else {

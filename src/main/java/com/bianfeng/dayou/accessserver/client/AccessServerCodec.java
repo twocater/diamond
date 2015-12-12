@@ -36,7 +36,9 @@ public class AccessServerCodec {
             byteBuf.writeShort(0);
         }
 
-        return byteBuf.array();
+        byte[] encodeBytes = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(encodeBytes);
+        return encodeBytes;
     }
 
 

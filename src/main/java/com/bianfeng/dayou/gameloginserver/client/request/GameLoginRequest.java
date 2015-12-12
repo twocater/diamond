@@ -1,20 +1,13 @@
-package com.bianfeng.dayou.accessserver.client.request;
+package com.bianfeng.dayou.gameloginserver.client.request;
 
 /**
- * Created by chenzhiwei on 15-12-10.
+ * Created by Administrator on 2015/12/12.
  */
-public class LoginRequest {
-    public interface UserType {
-        public static final int DAYOU_USER =1;
-        public static final int WX_USER = 2;
-        public static final int VISITOR_USER = 3;
-    }
-
+public class GameLoginRequest {
     private String userName;
     private String password;
-    private int userType;
+    private String userType;
     private String gameId;
-
 
     public String getUserName() {
         return userName;
@@ -32,13 +25,14 @@ public class LoginRequest {
         this.password = password;
     }
 
-    public int getUserType() {
+    public String getUserType() {
         return userType;
     }
 
-    public void setUserType(int userType) {
+    public void setUserType(String userType) {
         this.userType = userType;
     }
+
 
     public String getGameId() {
         return gameId;
@@ -47,4 +41,6 @@ public class LoginRequest {
     public void setGameId(String gameId) {
         this.gameId = gameId;
     }
+
+
 }
