@@ -2,7 +2,6 @@ package com.bianfeng.dayou.gameloginserver.client;
 
 import com.bianfeng.dayou.gameloginserver.client.request.GameLoginRequest;
 import com.bianfeng.dayou.gameloginserver.client.response.GameLoginServerResponse;
-import com.twocater.diamond.util.ObjectUtil;
 
 /**
  * Created by chenzhiwei on 15-12-9.

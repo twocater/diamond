@@ -4,7 +4,6 @@ import com.bianfeng.dayou.accessserver.ServerRequest;
 import com.bianfeng.dayou.gameloginserver.client.GameLoginServerProxy;
 import com.bianfeng.dayou.gameloginserver.client.request.GameLoginRequest;
 import com.bianfeng.dayou.gameloginserver.client.response.GameLoginServerResponse;
-import com.twocater.diamond.util.ObjectUtil;
 
 /**
  * Created by chenzhiwei on 15-12-9.

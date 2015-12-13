@@ -6,6 +6,7 @@ import io.netty.buffer.Unpooled;
 /**
  * Created by chenzhiwei on 15-12-2.
  */
+@Deprecated
 public class Client {
 
     public static void main(String[] args) {

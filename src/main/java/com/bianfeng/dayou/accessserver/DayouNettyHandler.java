@@ -8,6 +8,7 @@ import com.twocater.diamond.core.netty.NettyHandler;
 import com.twocater.diamond.core.server.ConnectChannel;
 import com.twocater.diamond.core.server.ServerContext;
 import com.twocater.diamond.kit.id.UuidGen;
+import com.twocater.diamond.util.ToStringUtil;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.HashMap;
@@ -36,7 +37,8 @@ public class DayouNettyHandler extends NettyHandler {
         ServerRequest request = (ServerRequest) msg;
         // old channel
         if (channels.containsValue(ctx.channel())) {
-
+            ServerResponse response = dispatch(request);
+            ctx.writeAndFlush(response);
         } else { // new channel
             if (request.getLongConnection() == 1) { //　long connection
                 // login auth
@@ -54,6 +56,7 @@ public class DayouNettyHandler extends NettyHandler {
         if (loginResult.isSuccess()) {
             String key = loginResult.getUid() + "-" + gameLoginRequest.getGameId();
             channels.put(key, ctx);
+            ToStringUtil.toString(channels);
         }
         ServerResponse serverResponse = encode(loginResult, serverRequest);
         if (loginResult.isSuccess()) {

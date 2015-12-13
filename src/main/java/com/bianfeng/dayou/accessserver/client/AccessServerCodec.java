@@ -41,10 +41,7 @@ public class AccessServerCodec {
         return encodeBytes;
     }
 
-
-    public static AccessServerResponse decode(byte[] bytes) {
-        ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
-
+    public static AccessServerResponse decode(ByteBuf byteBuf) {
         AccessServerResponse response = new AccessServerResponse();
         byte b1 = byteBuf.readByte();
         byte result = byteBuf.readByte();
@@ -77,5 +74,10 @@ public class AccessServerCodec {
         }
 
         return response;
+    }
+
+    public static AccessServerResponse decode(byte[] bytes) {
+        ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
+        return decode(byteBuf);
     }
 }
