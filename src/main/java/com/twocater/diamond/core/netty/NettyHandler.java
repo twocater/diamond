@@ -67,6 +67,7 @@ public abstract class NettyHandler extends ChannelInboundHandlerAdapter implemen
     }
 
     public static ChannelFutureListener CLOSE = new ChannelFutureListener() {
+
         @Override
         public void operationComplete(ChannelFuture channelFuture) throws Exception {
             channelFuture.channel().close();

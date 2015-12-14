@@ -42,6 +42,7 @@ public class LoginResponse {
         this.nickName = nickName;
     }
 
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

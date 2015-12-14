@@ -35,9 +35,11 @@ public class DayouNettyHandler extends NettyHandler {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ServerRequest request = (ServerRequest) msg;
+        System.out.println("request:" + ToStringUtil.toString(request));
         // old channel
-        if (channels.containsValue(ctx.channel())) {
+        if (channels.containsValue(ctx)) {
             ServerResponse response = dispatch(request);
+            System.out.println("old channel response:" + ToStringUtil.toString(response));
             ctx.writeAndFlush(response);
         } else { // new channel
             if (request.getLongConnection() == 1) { //　long connection
@@ -56,9 +58,9 @@ public class DayouNettyHandler extends NettyHandler {
         if (loginResult.isSuccess()) {
             String key = loginResult.getUid() + "-" + gameLoginRequest.getGameId();
             channels.put(key, ctx);
-            ToStringUtil.toString(channels);
         }
         ServerResponse serverResponse = encode(loginResult, serverRequest);
+        System.out.println("new channel response:" + ToStringUtil.toString(serverResponse));
         if (loginResult.isSuccess()) {
             ctx.writeAndFlush(serverResponse);
         } else {
@@ -84,7 +86,6 @@ public class DayouNettyHandler extends NettyHandler {
     }
 
     private ServerResponse dispatch(ServerRequest serverRequest) {
-        System.out.println(serverRequest);
         switch (serverRequest.getCommand()) {
             case 1:
                 return login(serverRequest);

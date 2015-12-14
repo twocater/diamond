@@ -26,7 +26,7 @@ public class LongSocketIO implements SocketIO {
         recBuf = new byte[recBufSize];
         SocketChannel channel = SocketChannel.open();
         socket = channel.socket();
-        if (timeout >= 0) {
+        if (timeout > 0) {
             socket.setSoTimeout(timeout);
         }
         socket.setTcpNoDelay(noDelay);
@@ -35,6 +35,12 @@ public class LongSocketIO implements SocketIO {
         socket.connect(new InetSocketAddress(host, port), connectTimeout);
         in = new DataInputStream(socket.getInputStream());
         out = new BufferedOutputStream(socket.getOutputStream());
+    }
+
+    public void clear() {
+        aliveTimeStamp = 0;
+        recBuf = new byte[recBufSize];
+        recIndex = 0;
     }
 
     public void destroy() throws IOException {

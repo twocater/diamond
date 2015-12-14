@@ -27,13 +27,15 @@ public class AccessServerClient {
         longSocketIO = new LongSocketIO(ip, port, timeout);
     }
 
-    public LoginResponse login(LoginRequest loginRequest) throws IOException {
+    public void login(LoginRequest loginRequest) throws IOException {
         AccessServerRequest serverRequest = toAccessServerRequest(loginRequest);
+        serverRequest.setLongConnection((byte) 1);
         byte[] sendData = AccessServerCodec.encode(serverRequest);
+        System.out.println("write");
         longSocketIO.write(sendData);
+        System.out.println("flush");
         longSocketIO.flush();
-        AccessServerResponse accessServerResponse = readResponse();
-        return toLoginResponse(accessServerResponse);
+        System.out.println("flush ok");
     }
 
     private AccessServerRequest toAccessServerRequest(LoginRequest loginRequest) {
@@ -46,7 +48,7 @@ public class AccessServerClient {
         return serverRequest;
     }
 
-    private LoginResponse toLoginResponse(AccessServerResponse accessServerResponse) {
+    public LoginResponse toLoginResponse(AccessServerResponse accessServerResponse) {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setResult(accessServerResponse.getResult());
         loginResponse.setSuccess(loginResponse.getResult() == 1);
@@ -62,7 +64,8 @@ public class AccessServerClient {
         }
     }
 
-    private AccessServerResponse readResponse() throws IOException {
+    public AccessServerResponse readResponse() throws IOException {
+        longSocketIO.clear();
         byte[] header = longSocketIO.readBytes(4);
         short dataLength = (short) (header[2] & 0xff << 8 | header[3] & 0xff);
         byte[] body = longSocketIO.readBytes(dataLength);
