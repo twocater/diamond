@@ -33,6 +33,7 @@ public class LongSocketIO implements SocketIO {
         socket.setReuseAddress(reuseAddress);
         socket.setKeepAlive(true);
         socket.connect(new InetSocketAddress(host, port), connectTimeout);
+        channel.configureBlocking(false);
         in = new DataInputStream(socket.getInputStream());
         out = new BufferedOutputStream(socket.getOutputStream());
     }

@@ -31,9 +31,8 @@ public class AccessServerClient {
         AccessServerRequest serverRequest = toAccessServerRequest(loginRequest);
         serverRequest.setLongConnection((byte) 1);
         byte[] sendData = AccessServerCodec.encode(serverRequest);
-        System.out.println("write");
         longSocketIO.write(sendData);
-        System.out.println("flush");
+        System.out.println("write ok");
         longSocketIO.flush();
         System.out.println("flush ok");
     }
@@ -60,7 +59,7 @@ public class AccessServerClient {
     public void receiveMessage() throws IOException {
         while (true) {
             AccessServerResponse accessServerResponse = readResponse();
-            System.out.println(ToStringUtil.toString(accessServerResponse));
+            System.out.println(ToStringUtil.toString(toLoginResponse(accessServerResponse)));
         }
     }
 
