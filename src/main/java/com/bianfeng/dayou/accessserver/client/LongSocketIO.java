@@ -1,12 +1,20 @@
 package com.bianfeng.dayou.accessserver.client;
 
+import com.twocater.diamond.util.ToStringUtil;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.util.Set;
 
 public class LongSocketIO implements SocketIO {
     private Socket socket;
@@ -17,6 +25,13 @@ public class LongSocketIO implements SocketIO {
     private int recIndex = 0;
     private long aliveTimeStamp = 0;
 
+    private Selector selector;
+    private SocketChannel client;
+
+    private Thread thread;
+
+    private boolean connected;
+
     public LongSocketIO(String host, int port, int timeout) throws IOException {
         this(host, port, timeout, timeout, true, true);
     }
@@ -24,18 +39,64 @@ public class LongSocketIO implements SocketIO {
     public LongSocketIO(String host, int port, int connectTimeout, int timeout, boolean noDelay,
                         boolean reuseAddress) throws IOException {
         recBuf = new byte[recBufSize];
-        SocketChannel channel = SocketChannel.open();
-        socket = channel.socket();
-        if (timeout > 0) {
-            socket.setSoTimeout(timeout);
-        }
-        socket.setTcpNoDelay(noDelay);
-        socket.setReuseAddress(reuseAddress);
-        socket.setKeepAlive(true);
-        socket.connect(new InetSocketAddress(host, port), connectTimeout);
-        channel.configureBlocking(false);
-        in = new DataInputStream(socket.getInputStream());
-        out = new BufferedOutputStream(socket.getOutputStream());
+        SocketChannel socketChannel = SocketChannel.open();
+        socketChannel.configureBlocking(false);
+        selector = Selector.open();
+        socketChannel.register(selector, SelectionKey.OP_CONNECT);
+        socketChannel.connect(new InetSocketAddress(host, port));
+
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+
+                    try {
+                        selector.select();
+                        Set<SelectionKey> selectionKeys = selector.selectedKeys();
+
+                        for (SelectionKey selectionKey : selectionKeys) {
+                            if (selectionKey.isConnectable()) {
+                                client = (SocketChannel) selectionKey.channel();
+                                if (client.isConnectionPending()) {
+                                    client.finishConnect();
+                                    connected = true;
+                                }
+                                client.register(selector, SelectionKey.OP_READ);
+                            } else if (selectionKey.isReadable()) {
+//                                client = (SocketChannel) selectionKey.channel();
+                                final ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+                                int read = client.read(byteBuffer);
+
+                                final ByteBuf byteBuf = Unpooled.wrappedBuffer(byteBuffer);
+                                final AccessServerResponse accessServerResponse = AccessServerCodec.decode(byteBuf);
+                                System.out.println(ToStringUtil.toString(AccessServerClient.toLoginResponse(accessServerResponse)));
+                                client.register(selector, SelectionKey.OP_READ);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
+//        socket = channel.socket();
+//        if (timeout > 0) {
+//            socket.setSoTimeout(timeout);
+//        }
+//        socket.setTcpNoDelay(noDelay);
+//        socket.setReuseAddress(reuseAddress);
+//        socket.setKeepAlive(true);
+//        socket.connect(new InetSocketAddress(host, port), connectTimeout);
+//        in = new DataInputStream(socket.getInputStream());
+//        out = new BufferedOutputStream(socket.getOutputStream());
+    }
+
+    public void nioWrite(byte[] bytes) throws IOException {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+        byteBuffer.put(bytes);
+        byteBuffer.flip();
+        client.write(byteBuffer);
     }
 
     public void clear() {
@@ -78,64 +139,76 @@ public class LongSocketIO implements SocketIO {
     }
 
     public boolean isConnected() {
-        return (socket != null && socket.isConnected());
+//        return (socket != null && socket.isConnected());
+        return connected;
     }
 
     public boolean isAlive() {
         return isConnected();
     }
 
-    public byte[] readBytes(int length) throws IOException {
+    public byte[] readBytesFully(int length) throws IOException {
         if (socket == null || !socket.isConnected()) {
             throw new IOException("++++ attempting to read from closed socket");
         }
-        byte[] result = null;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        if (recIndex >= length) {
-            bos.write(recBuf, 0, length);
-            byte[] newBuf = new byte[recBufSize];
-            if (recIndex > length) {
-                System.arraycopy(recBuf, length, newBuf, 0, recIndex - length);
-            }
-            recBuf = newBuf;
-            recIndex = recIndex - length;
-        } else {
-            int totalread = length;
-            if (recIndex > 0) {
-                totalread = totalread - recIndex;
-                bos.write(recBuf, 0, recIndex);
-                recBuf = new byte[recBufSize];
-                recIndex = 0;
-            }
-            int readCount = 0;
-            while (totalread > 0) {
-                if ((readCount = in.read(recBuf)) > 0) {
-                    if (totalread > readCount) {
-                        bos.write(recBuf, 0, readCount);
-                        recBuf = new byte[recBufSize];
-                        recIndex = 0;
-                    } else {
-                        bos.write(recBuf, 0, totalread);
-                        byte[] newBuf = new byte[recBufSize];
-                        System.arraycopy(recBuf, totalread, newBuf, 0,
-                                readCount - totalread);
-                        recBuf = newBuf;
-                        recIndex = readCount - totalread;
-                    }
-                    totalread = totalread - readCount;
-                }
-            }
+        byte[] result = new byte[length];
 
-        }
-        result = bos.toByteArray();
-        if (result == null
-                || (result != null && result.length <= 0 && recIndex <= 0)) {
-            throw new IOException(
-                    "++++ Stream appears to be dead, so closing it down");
-        }
-        aliveTimeStamp = System.currentTimeMillis();
+        in.readFully(result);
         return result;
     }
+
+
+//    public byte[] readBytes(int length) throws IOException {
+//        if (socket == null || !socket.isConnected()) {
+//            throw new IOException("++++ attempting to read from closed socket");
+//        }
+//        byte[] result = null;
+//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//        if (recIndex >= length) {
+//            bos.write(recBuf, 0, length);
+//            byte[] newBuf = new byte[recBufSize];
+//            if (recIndex > length) {
+//                System.arraycopy(recBuf, length, newBuf, 0, recIndex - length);
+//            }
+//            recBuf = newBuf;
+//            recIndex = recIndex - length;
+//        } else {
+//            int totalread = length;
+//            if (recIndex > 0) {
+//                totalread = totalread - recIndex;
+//                bos.write(recBuf, 0, recIndex);
+//                recBuf = new byte[recBufSize];
+//                recIndex = 0;
+//            }
+//            int readCount = 0;
+//            while (totalread > 0) {
+//                if ((readCount = in.read(recBuf)) > 0) {
+//                    if (totalread > readCount) {
+//                        bos.write(recBuf, 0, readCount);
+//                        recBuf = new byte[recBufSize];
+//                        recIndex = 0;
+//                    } else {
+//                        bos.write(recBuf, 0, totalread);
+//                        byte[] newBuf = new byte[recBufSize];
+//                        System.arraycopy(recBuf, totalread, newBuf, 0,
+//                                readCount - totalread);
+//                        recBuf = newBuf;
+//                        recIndex = readCount - totalread;
+//                    }
+//                    totalread = totalread - readCount;
+//                }
+//            }
+//
+//        }
+//        result = bos.toByteArray();
+//        if (result == null
+//                || (result != null && result.length <= 0 && recIndex <= 0)) {
+//            throw new IOException(
+//                    "++++ Stream appears to be dead, so closing it down");
+//        }
+//        aliveTimeStamp = System.currentTimeMillis();
+//        return result;
+//    }
 
     public String readLine() throws IOException {
         if (socket == null || !socket.isConnected()) {

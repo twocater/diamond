@@ -9,6 +9,8 @@ import com.twocater.diamond.core.server.ConnectChannel;
 import com.twocater.diamond.core.server.ServerContext;
 import com.twocater.diamond.kit.id.UuidGen;
 import com.twocater.diamond.util.ToStringUtil;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.HashMap;
@@ -40,7 +42,7 @@ public class DayouNettyHandler extends NettyHandler {
         if (channels.containsValue(ctx)) {
             ServerResponse response = dispatch(request);
             System.out.println("old channel response:" + ToStringUtil.toString(response));
-            ctx.writeAndFlush(response);
+            ctx.writeAndFlush(response).addListener(channelFutureListener);
         } else { // new channel
             if (request.getLongConnection() == 1) { //　long connection
                 // login auth
@@ -52,20 +54,40 @@ public class DayouNettyHandler extends NettyHandler {
         }
     }
 
-    private void login(ChannelHandlerContext ctx, ServerRequest serverRequest) {
+    private ChannelFutureListener channelFutureListener = new ChannelFutureListener() {
+        @Override
+        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+            System.out.println("write finish.");
+        }
+    };
+
+    private void login(final ChannelHandlerContext ctx, ServerRequest serverRequest) {
         GameLoginRequest gameLoginRequest = ServerFactory.getInstance().getGameLoginSer().getGameLoginRequest(serverRequest);
         GameLoginServerResponse loginResult = ServerFactory.getInstance().getGameLoginSer().login(gameLoginRequest);
         if (loginResult.isSuccess()) {
             String key = loginResult.getUid() + "-" + gameLoginRequest.getGameId();
             channels.put(key, ctx);
         }
-        ServerResponse serverResponse = encode(loginResult, serverRequest);
+        final ServerResponse serverResponse = encode(loginResult, serverRequest);
         System.out.println("new channel response:" + ToStringUtil.toString(serverResponse));
         if (loginResult.isSuccess()) {
-            ctx.writeAndFlush(serverResponse);
+            ctx.writeAndFlush(serverResponse).addListener(channelFutureListener);
         } else {
             ctx.writeAndFlush(serverResponse).addListener(CLOSE);
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    ctx.writeAndFlush(serverResponse).addListener(channelFutureListener);
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     private ServerResponse login(ServerRequest serverRequest) {
@@ -73,6 +95,13 @@ public class DayouNettyHandler extends NettyHandler {
         return encode(loginResult, serverRequest);
     }
 
+    /**
+     * encode  GameLoginServerResponse to ServerResponse
+     *
+     * @param loginResult
+     * @param serverRequest
+     * @return
+     */
     private ServerResponse encode(GameLoginServerResponse loginResult, ServerRequest serverRequest) {
         ServerResponse serverResponse = new ServerResponse();
         serverResponse.setResult((byte) loginResult.getResult());

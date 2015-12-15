@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public interface SocketIO {
 
-	public byte[] readBytes(int length) throws IOException;
+//	public byte[] readBytes(int length) throws IOException;
 	
 	public byte[] readBytes() throws IOException;
 

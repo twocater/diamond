@@ -18,8 +18,10 @@ public class AccessServerClient {
     private int timeout;
     private LongSocketIO longSocketIO;
     private boolean isLoginSuccess;
+    private Thread thread;
 
-    public AccessServerClient(String ip, int port, int timeout) throws IOException {
+
+    public AccessServerClient(final String ip, final int port, final int timeout) throws IOException {
         this.ip = ip;
         this.port = port;
         this.timeout = timeout;
@@ -27,14 +29,17 @@ public class AccessServerClient {
         longSocketIO = new LongSocketIO(ip, port, timeout);
     }
 
+    public boolean isConnected() {
+        return longSocketIO.isConnected();
+    }
+
+
     public void login(LoginRequest loginRequest) throws IOException {
         AccessServerRequest serverRequest = toAccessServerRequest(loginRequest);
         serverRequest.setLongConnection((byte) 1);
         byte[] sendData = AccessServerCodec.encode(serverRequest);
-        longSocketIO.write(sendData);
+        longSocketIO.nioWrite(sendData);
         System.out.println("write ok");
-        longSocketIO.flush();
-        System.out.println("flush ok");
     }
 
     private AccessServerRequest toAccessServerRequest(LoginRequest loginRequest) {
@@ -47,7 +52,7 @@ public class AccessServerClient {
         return serverRequest;
     }
 
-    public LoginResponse toLoginResponse(AccessServerResponse accessServerResponse) {
+    public static LoginResponse toLoginResponse(AccessServerResponse accessServerResponse) {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setResult(accessServerResponse.getResult());
         loginResponse.setSuccess(loginResponse.getResult() == 1);
@@ -56,19 +61,13 @@ public class AccessServerClient {
         return loginResponse;
     }
 
-    public void receiveMessage() throws IOException {
-        while (true) {
-            AccessServerResponse accessServerResponse = readResponse();
-            System.out.println(ToStringUtil.toString(toLoginResponse(accessServerResponse)));
-        }
-    }
 
     public AccessServerResponse readResponse() throws IOException {
-        longSocketIO.clear();
-        byte[] header = longSocketIO.readBytes(4);
+        byte[] header;
+        byte[] body;
+        header = longSocketIO.readBytesFully(4);
         short dataLength = (short) (header[2] & 0xff << 8 | header[3] & 0xff);
-        byte[] body = longSocketIO.readBytes(dataLength);
-
+        body = longSocketIO.readBytesFully(dataLength);
         ByteBuf byteBuf = Unpooled.wrappedBuffer(header, body);
         AccessServerResponse accessServerResponse = AccessServerCodec.decode(byteBuf);
         return accessServerResponse;
