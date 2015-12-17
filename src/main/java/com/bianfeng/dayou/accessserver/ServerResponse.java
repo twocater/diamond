@@ -56,4 +56,18 @@ public class ServerResponse {
     public void setParams(String paramName, String paramValue) {
         this.params.put(paramName, paramValue);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("version:").append(version).append(",");
+        sb.append("encrypt:").append(encrypt).append(",");
+        sb.append("longConnection:").append(longConnection).append(",");
+        sb.append("result:").append(result).append(",");
+        sb.append("params:");
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            sb.append(entry.toString());
+        }
+        return sb.toString();
+    }
 }
