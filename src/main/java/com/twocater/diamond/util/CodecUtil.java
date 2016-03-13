@@ -49,7 +49,7 @@ public class CodecUtil {
     public static Map<String, String> decodeToMap(ByteBuf byteBuf) {
         int length;
         if (byteBuf == null || (length = byteBuf.readableBytes()) == 0) {
-            return Collections.emptyMap();
+            return null;
         }
         if (length < 4) {
             throw new IllegalStateException("data length less than 4.");
