@@ -136,4 +136,11 @@
             <version>1.0.11</version>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>local-mvn-repo</id>
+            <url>file:E:\workspaces_czw\dayou\maven-repository\repository</url>
+        </repository>
+    </distributionManagement>
 </project>
