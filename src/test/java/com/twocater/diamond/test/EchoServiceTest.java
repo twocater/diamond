@@ -17,7 +17,7 @@ public class EchoServiceTest {
 
     private static Logger log = LoggerFactory.getLogger(EchoServiceTest.class);
     private static final String IP = "localhost";
-    private static final int PORT = 8888;
+    private static final int PORT = 8090;
     private static final int TIMEOUT = 10000;
     private static final Charset RESPONSE_ENCODING = StandardCharsets.UTF_8;
 

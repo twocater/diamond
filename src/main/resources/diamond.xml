@@ -15,6 +15,8 @@
         <!-- 参数列表 -->
         <property name="params">
             <map>
+                <entry key="param1" value="value1"/>
+                <entry key="param2" value="value2"/>
             </map>
         </property>
 
@@ -27,7 +29,10 @@
 
         <!-- 服务配置列表 -->
         <property name="serviceConfigs">
+
             <list>
+                <ref bean="echoHttpService"/>
+                <ref bean="echoHttpJsonService"/>
             </list>
         </property>
 
@@ -65,13 +70,42 @@
         </property>
     </bean>
 
+    <bean id="echoHttpService" class="com.twocater.diamond.core.server.parse.ContextServiceConfig">
+        <property name="serviceName" value="echoHttpService"/>
+        <property name="serviceClass" value="com.twocater.diamond.ext.service.EchoHttpService"/>
+        <property name="order" value="1"/>
+        <property name="params">
+            <map>
+                <entry key="key1" value="value1"/>
+                <entry key="key2" value="value2"/>
+            </map>
+        </property>
+        <property name="servicePaths">
+            <list>
+                <value>/echo</value>
+                <!--<value>echoHttpService1</value>-->
+            </list>
+        </property>
+    </bean>
+
+    <bean id="echoHttpJsonService" class="com.twocater.diamond.core.server.parse.ContextServiceConfig">
+        <property name="serviceName" value="echoHttpJsonService"/>
+        <property name="serviceClass" value="com.twocater.diamond.ext.service.EchoHttpJsonService"/>
+        <property name="order" value="1"/>
+        <property name="servicePaths">
+            <list>
+                <value>/echoJson</value>
+            </list>
+        </property>
+    </bean>
+
     <!-- 连接器配置 -->
     <bean id="connectorConfig" class="com.twocater.diamond.core.server.parse.ConnectorConfig">
-        <property name="port" value="9123"/>
-        <property name="protocol" value="tcp"/>
+        <property name="port" value="8090"/>
+        <property name="protocol" value="http"/>
         <property name="keepAlive" value="true"/>
-        <property name="timeout" value="0"/>
-        <property name="handlerFactory" value="com.bianfeng.dayou.accessserver.AccessServerHandlerFactory"/>
+        <property name="timeout" value="2000"/>
+        <property name="handlerFactory" value="com.twocater.diamond.core.netty.http.HttpHandlerFactory"/>
         <property name="bussThread" value="100" />
         
         <property name="so_backlog_parent" value="128"/>

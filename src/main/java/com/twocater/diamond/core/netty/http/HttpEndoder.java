@@ -56,9 +56,9 @@ public class HttpEndoder extends ChannelOutboundHandlerAdapter {
         boolean keepAlive = httpResponseMessage.isKeepAlive();
         response.headers().set(HttpHeaders.Names.CONNECTION, keepAlive ? HttpHeaders.Values.KEEP_ALIVE : HttpHeaders.Values.CLOSE);
         if (!keepAlive) {
-            ctx.write(response).addListener(CLOSE);
+            ctx.writeAndFlush(response).addListener(CLOSE);
         } else {
-            ctx.write(response);
+            ctx.writeAndFlush(response);
         }
     }
 
